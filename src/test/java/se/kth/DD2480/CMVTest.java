@@ -42,7 +42,8 @@ class CMVTest {
     @Test
     void lic5_returnsFalse_whenNotEnoughPoints() {
         CMV cmv = new CMV();
-        assertFalse(cmv.lic5(null, 1));
+        Point[] points = { new Point(1,1)};
+        assertFalse(cmv.lic5(points, 1));
     }
 
 
@@ -63,7 +64,9 @@ class CMVTest {
     }
 
     @Test
-    void lic10() {
+    void lic10_returnsFalse_whenPointsIsNull() {
+        CMV cmv = new CMV();
+        assertFalse(cmv.lic10(null, 0, 0, 0.0, 0));
     }
 
     @Test
