@@ -12,68 +12,68 @@ public class CMV {
         this.cmv = new boolean[15];
     }
 
-    private boolean lic0() {
+    boolean lic0() {
         return false;
 
     }
 
-
-    private boolean lic1() {
+    boolean lic1() {
         return false;
     }
 
-    private boolean lic2() {
+    boolean lic2() {
         return false;
     }
 
-    private boolean lic3() {
+    boolean lic3() {
         return false;
     }
 
-    private boolean lic4() {
+    boolean lic4() {
         return false;
     }
 
-    private boolean lic5() {
+    boolean lic5() {
         return false;
     }
 
-    private boolean lic6() {
-        return false;
-    }
-    private boolean lic7() {
+    boolean lic6() {
         return false;
     }
 
-    private boolean lic8() {
+    boolean lic7() {
         return false;
     }
 
-    private boolean lic9() {
+    boolean lic8() {
         return false;
     }
 
-    private boolean lic10() {
+    boolean lic9() {
         return false;
     }
 
-    private boolean lic11() {
+    boolean lic10() {
         return false;
     }
 
-    private boolean lic12() {
+    boolean lic11() {
         return false;
     }
 
-    private boolean lic13() {
+    boolean lic12() {
         return false;
     }
 
-    private boolean lic14() {
+    boolean lic13() {
         return false;
     }
 
-    private boolean lic15() {
+    boolean lic14() {
+        return false;
+    }
+
+    boolean lic15() {
         return false;
     }
 
