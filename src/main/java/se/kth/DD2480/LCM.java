@@ -1,17 +1,14 @@
 package se.kth.DD2480;
 
-import java.util.ArrayList;
-
 public class LCM {
 
-    int[][] arr;
+    CONNECTORS[][] arr;
 
-
-    public LCM(int[][] arr) {
+    public LCM(CONNECTORS[][] arr) {
         this.arr = arr;
     }
 
-    public int[][] getArr() {
+    public CONNECTORS[][] getArr() {
         return arr;
     }
 }
