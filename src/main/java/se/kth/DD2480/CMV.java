@@ -23,7 +23,7 @@ public class CMV {
     }
 
     boolean lic1(Point[] points, int NUMPOINTS, double RADIUS1) {
-        if(points == null || NUMPOINTS < 3) {
+        if(points == null || NUMPOINTS < 3 || RADIUS1 < 0){ {
             return false;
         }
         for (int i = 0; i < NUMPOINTS-2; i++) {
