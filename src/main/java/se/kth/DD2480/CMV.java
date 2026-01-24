@@ -127,10 +127,10 @@ public class CMV {
 
 
 
-    public boolean[] verifyAllLics(double LENGTH1, Point[] points, int NUMPOINTS, int E_PTS, int F_PTS, double AREA1, double RADIUS1) {
+    public boolean[] verifyAllLics(Parameters p, Point[] points, int NUMPOINTS) {
 
-        cmv[0] = lic0(points, LENGTH1, NUMPOINTS);
-        cmv[1] = lic1(points, NUMPOINTS, RADIUS1);
+        cmv[0] = lic0(points, p.LENGTH1, NUMPOINTS);
+        cmv[1] = lic1(points, NUMPOINTS, p.RADIUS1);
         cmv[2] = lic2();
         cmv[3] = lic3();
         cmv[4] = lic4();
