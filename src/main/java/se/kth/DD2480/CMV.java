@@ -30,7 +30,15 @@ public class CMV {
         return false;
     }
 
-    boolean lic3() {
+    boolean lic3(Point[] points, int NUMPOINTS, double AREA1) {
+        if (points == null || NUMPOINTS < 3) return false;
+
+        for (int i = 0; i <= NUMPOINTS - 3; i++) {
+            double areaOfPoints = Point.triangleArea(points[i], points[i + 1], points[i + 2]);
+
+            if (areaOfPoints > AREA1) return true;
+        }
+
         return false;
     }
 
@@ -107,7 +115,7 @@ public class CMV {
         cmv[0] = lic0(points, LENGTH1, NUMPOINTS);
         cmv[1] = lic1();
         cmv[2] = lic2();
-        cmv[3] = lic3();
+        cmv[3] = lic3(points, NUMPOINTS, AREA1);
         cmv[4] = lic4();
         cmv[5] = lic5(points, NUMPOINTS);
         cmv[6] = lic6();
