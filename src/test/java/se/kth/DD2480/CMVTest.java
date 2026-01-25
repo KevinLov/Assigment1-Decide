@@ -95,7 +95,42 @@ class CMVTest {
 
 
     @Test
-    void lic6() {
+    void lic6_any_input() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(0, 0),
+                new Point(1, 0),
+                new Point(0, 0),
+                new Point(0, 3)
+        };
+
+        assertFalse(cmv.lic6(points, points.length, 3, 2.0));
+    }
+
+    @Test
+    void lic6_invalid_input() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(0, 0),
+                new Point(1, 0),
+                new Point(0, 0),
+                new Point(0, 3)
+        };
+
+        assertFalse(cmv.lic6(points, points.length, 7, -1));
+    }
+
+    @Test
+    void lic6_true_input() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(0, 0),
+                new Point(1, 0),
+                new Point(3, 0),
+                new Point(1, 0)
+        };
+
+        assertTrue(cmv.lic6(points, points.length, 3, 1));
     }
 
     @Test
