@@ -52,7 +52,10 @@ class CMVTest {
     }
 
     @Test
-    void lic2() {
+    void lic2_returnsTrue_whenAngleIsLessThanPiMinusEpsilon() {
+        Point[] points90degrees = {new Point(0, 1), new Point(0, 0), new Point(1, 0)};
+
+        assertTrue(cmv.lic2(points90degrees, 3, 3.1415926535, 0.000001)); // Points, NUMPOINTS, PI, EPSILON
     }
 
     @Test
