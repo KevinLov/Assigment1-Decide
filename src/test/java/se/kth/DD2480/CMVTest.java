@@ -32,7 +32,61 @@ class CMVTest {
     }
 
     @Test
-    void lic3() {
+    void lic3_returnsFalse_whenPointsAreaLessThanArea1() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 10), new Point(0, 0), new Point(10, 0)};
+        assertFalse(cmv.lic3(points, points.length, 100.0));
+    }
+
+    @Test
+    void lic3_returnsFalse_whenPointsAreaEqualToArea1() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 0), new Point(0, 10), new Point(10, 0)};
+        assertFalse(cmv.lic3(points, points.length, 50.0));
+    }
+
+    @Test
+    void lic3_returnsFalse_whenNumpointsIsLessThanThree() {
+        CMV cvm = new CMV();
+        Point[] points = {new Point(0, 0), new Point(0, 10), new Point(10, 0)};
+        assertFalse(cvm.lic3(points, 2, 0.0));
+    }
+
+    @Test
+    void lic3_returnsFalse_whenPointsIsNull() {
+        CMV cvm = new CMV();
+        assertFalse(cvm.lic3(null, 3, 10.0));
+    }
+
+    @Test
+    void lic3_returnsTrue_whenFirstPointsHaveValidArea() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(10, 0),
+                new Point(0, 10),
+                new Point(0, 0),
+                new Point(3, 6)
+        };
+        assertTrue(cmv.lic3(points, points.length, 49.0));
+    }
+
+    @Test
+    void lic3_returnsTrue_whenLastPointsHaveValidArea() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(4, 2),
+                new Point(20, 0),
+                new Point(0, 10),
+                new Point(0, 0)
+        };
+        assertTrue(cmv.lic3(points, points.length, 99.0));
+    }
+
+    @Test
+    void lic3_returnsTrue_whenPointsHaveValidAreaAndArea1IsZero() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 0), new Point(0, 1), new Point(1, 0)};
+        assertTrue(cmv.lic3(points, points.length, 0.0));
     }
 
     @Test
