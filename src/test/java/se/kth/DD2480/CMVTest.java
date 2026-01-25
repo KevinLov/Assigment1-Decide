@@ -66,6 +66,16 @@ class CMVTest {
     }
 
     @Test
+    void lic2_returnsFalse_whenInputParametersAreWrong() {
+        Point[] validPoints = {new Point(0, 1), new Point(0, 0), new Point(1, 0)};
+
+        assertFalse(cmv.lic2(null, 3, 3.1415926535, 0.000001)); // Points, NUMPOINTS, PI, EPSILON
+        assertFalse(cmv.lic2(validPoints, 2, 3.1415926535, 0.000001)); // Points, NUMPOINTS, PI, EPSILON
+        assertFalse(cmv.lic2(validPoints, 3, 1, 0.000001)); // Points, NUMPOINTS, PI, EPSILON
+        assertFalse(cmv.lic2(validPoints, 3, 3.1415926535, 1)); // Points, NUMPOINTS, PI, EPSILON
+    }
+
+    @Test
     void lic3() {
     }
 
