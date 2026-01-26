@@ -79,6 +79,7 @@ class CMVTest {
 
     @Test
     void lic2_returnsTrue_whenAngleIsLessThanPiMinusEpsilon() {
+        CMV cmv = new CMV();
         Point[] points90degrees = {new Point(0, 1), new Point(0, 0), new Point(1, 0)};
 
         assertTrue(cmv.lic2(points90degrees, 3, 3.1415926535, 0.000001)); // Points, NUMPOINTS, PI, EPSILON
@@ -86,6 +87,7 @@ class CMVTest {
 
     @Test
     void lic2_returnsFalse_whenPointsCollide() {
+        CMV cmv = new CMV();
         Point[] collidingPoints = {new Point(0, 1), new Point(0, 0), new Point(0, 0)};
 
         assertFalse(cmv.lic2(collidingPoints, 3, 3.1415926535, 0.000001)); // Points, NUMPOINTS, PI, EPSILON
@@ -93,6 +95,7 @@ class CMVTest {
 
     @Test
     void lic2_returnsFalse_whenInputParametersAreWrong() {
+        CMV cmv = new CMV();
         Point[] validPoints = {new Point(0, 1), new Point(0, 0), new Point(1, 0)};
 
         assertFalse(cmv.lic2(null, 3, 3.1415926535, 0.000001)); // Points, NUMPOINTS, PI, EPSILON
@@ -103,6 +106,7 @@ class CMVTest {
 
     @Test
     void lic2_returnsFalse_whenPointsAreOnStraightLine() {
+        CMV cmv = new CMV();
         Point[] straightLine = {new Point(0, 0), new Point(1, 1), new Point(2, 2)};
 
         assertFalse(cmv.lic2(straightLine, 3, 3.1415926535, 0.000001)); // Points, NUMPOINTS, PI, EPSILON
