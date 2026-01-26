@@ -98,10 +98,10 @@ class CMVTest {
         CMV cmv = new CMV();
         Point[] validPoints = {new Point(0, 1), new Point(0, 0), new Point(1, 0)};
 
-        assertFalse(cmv.lic2(null, 3, 3.1415926535, 0.000001)); // Points, NUMPOINTS, PI, EPSILON
-        assertFalse(cmv.lic2(validPoints, 2, 3.1415926535, 0.000001)); // Points, NUMPOINTS, PI, EPSILON
-        assertFalse(cmv.lic2(validPoints, 3, 1, 0.000001)); // Points, NUMPOINTS, PI, EPSILON
-        assertFalse(cmv.lic2(validPoints, 3, 3.1415926535, 1)); // Points, NUMPOINTS, PI, EPSILON
+        assertFalse(cmv.lic2(null, 3, 3.1415926535, 1));              // Points is invalid
+        assertFalse(cmv.lic2(validPoints, 2, 3.1415926535, 1));             // NUMPOINTS is invalid
+        assertFalse(cmv.lic2(validPoints, 3, 1, 0));                        // EPSILON is invalid
+        assertFalse(cmv.lic2(validPoints, 3, 3.1415926535, 3.1415926535));  // EPSILON is invalid
     }
 
     @Test
