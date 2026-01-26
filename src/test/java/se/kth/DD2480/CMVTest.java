@@ -151,7 +151,7 @@ class CMVTest {
 
 
     @Test
-    void lic11_true_input() {
+    void lic11_returnsTrueForLastThreeElements() {
         CMV cmv = new CMV();
         Point[] points = {
                 new Point(6, 1),
@@ -165,7 +165,7 @@ class CMVTest {
     }
 
     @Test
-    void lic11_false_input() {
+    void lic11_returnsFalseForRisingXValues() {
         CMV cmv = new CMV();
         Point[] points = {
                 new Point(1, 1),
@@ -179,7 +179,7 @@ class CMVTest {
     }
 
     @Test
-    void lic11_invalid_input() {
+    void lic11_returnsFalseForG_PTSBeingLargerThanNUMPOINTSMinusTwo() {
         CMV cmv = new CMV();
         Point[] points = {
                 new Point(1, 1),
