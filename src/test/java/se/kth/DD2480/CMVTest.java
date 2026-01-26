@@ -81,12 +81,167 @@ class CMVTest {
     }
 
     @Test
-    void lic3() {
+    void lic3_returnsFalse_whenPointsAreaLessThanArea1() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 10), new Point(0, 0), new Point(10, 0)};
+        assertFalse(cmv.lic3(points, points.length, 100.0));
     }
 
     @Test
-    void lic4() {
+    void lic3_returnsFalse_whenPointsAreaEqualToArea1() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 0), new Point(0, 10), new Point(10, 0)};
+        assertFalse(cmv.lic3(points, points.length, 50.0));
     }
+
+    @Test
+    void lic3_returnsFalse_whenNumpointsIsLessThanThree() {
+        CMV cvm = new CMV();
+        Point[] points = {new Point(0, 0), new Point(0, 10), new Point(10, 0)};
+        assertFalse(cvm.lic3(points, 2, 0.0));
+    }
+
+    @Test
+    void lic3_returnsFalse_whenPointsIsNull() {
+        CMV cvm = new CMV();
+        assertFalse(cvm.lic3(null, 3, 10.0));
+    }
+
+    @Test
+    void lic3_returnsTrue_whenFirstPointsHaveValidArea() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(10, 0),
+                new Point(0, 10),
+                new Point(0, 0),
+                new Point(3, 6)
+        };
+        assertTrue(cmv.lic3(points, points.length, 49.0));
+    }
+
+    @Test
+    void lic3_returnsTrue_whenLastPointsHaveValidArea() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(4, 2),
+                new Point(20, 0),
+                new Point(0, 10),
+                new Point(0, 0)
+        };
+        assertTrue(cmv.lic3(points, points.length, 99.0));
+    }
+
+    @Test
+    void lic3_returnsTrue_whenPointsHaveValidAreaAndArea1IsZero() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 0), new Point(0, 1), new Point(1, 0)};
+        assertTrue(cmv.lic3(points, points.length, 0.0));
+    }
+
+    @Test
+    void lic4_ReturnsFalseForIllegalQuads() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 0), new Point(1,1), new Point(0,1),
+                new Point(-1,0), new Point(0,-1)};
+        assertFalse(cmv.lic4(points, points.length, 2, 0));
+    }
+
+    @Test
+    void lic4_ReturnsFalseForIllegalQ_PTS() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(1, 1), new Point(-1,1), new Point(-1,-1),
+                new Point(1,-1), new Point(0,-1)};
+        assertFalse(cmv.lic4(points, points.length, 1, 3));
+    }
+
+    @Test
+    void lic4_ReturnsTrueForConsecutiveBoundaryPoints() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 0), new Point(1,1), new Point(0,1),
+        new Point(-1,0), new Point(0,-1)};
+        assertTrue(cmv.lic4(points, points.length, 5, 2));
+    }
+
+    @Test
+    void lic4_ReturnsFalseWhenPointsIsNull() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 0), new Point(-1, -1)};
+        assertFalse(cmv.lic4(null, points.length, 2, 1));
+    }
+
+    @Test
+    void lic4_ReturnsFalseWhenSetIsClearedWhenItWouldHaveReturnedTrueOtherwise() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 0), new Point(-1, 1), new Point(-1,-1), new Point(-2,1),
+            new Point(1,-1)};
+        assertFalse(cmv.lic4(points, points.length, 4, 3));
+    }
+
+    @Test
+    void lic4_ReturnsFalseWhenQuad4IsExcluded() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 0), new Point(1,1)};
+        assertFalse(cmv.lic4(points, points.length, 2, 1));
+    }
+
+    @Test
+    void lic4_ReturnsFalseWhenAllPointsInOneQuad() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 0), new Point(1,1)};
+        assertFalse(cmv.lic4(points, points.length, 2, 1));
+    }
+
+    @Test
+    void lic4_ReturnsTrueWhenTwoConsecutiveSpreadInTwoDistinctQuads() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 0), new Point(-1, -1)};
+        assertTrue(cmv.lic4(points, points.length, 2, 1));
+    }
+
+    @Test
+    void lic4_ReturnsFalseWhenTwoConsecutiveSpreadInTwoDistinctQuadsButQ_PTSEqualsQuads() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 0), new Point(-1, -1)};
+        assertFalse(cmv.lic4(points, points.length, 2, 2));
+    }
+
+    @Test
+    void lic4_ReturnsFalseWhenQ_PointsMoreThanNumPoints() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 0), new Point(-1, -1)};
+        assertFalse(cmv.lic4(points, points.length, 3, 2));
+    }
+
+    @Test
+    void lic4_ReturnsTrueForConsecutivelyPlacedCorrectElementsAreFirstInPointsArray() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 0), new Point(-1, -1), new Point(-1, 0), new Point(-1, 1)};
+        assertTrue(cmv.lic4(points, points.length, 3, 2));
+    }
+    @Test
+    void lic4_ReturnsTrueForConsecutivelyPlacedCorrectElementsAreLastInPointsArray() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 0), new Point(1, 15), new Point(-1, 0), new Point(-1, -1)};
+        assertTrue(cmv.lic4(points, points.length, 3, 2));
+    }
+
+    @Test
+    void lic4_returnsFalseWhenNotSpreadInDistinctQuadsButNotConsecutively() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 0), new Point(-1, 15), new Point(1, 1), new Point(11, 10), new Point(10, 10),
+                new Point(0, -10), new Point(1, 15)};
+        assertFalse(cmv.lic4(points, points.length, 3, 2));
+    }
+
+    @Test
+    void lic4_returnsFalseWhenSpreadInDistinctQuadsConsecutivelyButNotQ_PTSEqualQuads() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 0), new Point(-1, 15), new Point(1, 1), new Point(11, 10), new Point(10, 10),
+                new Point(0, -10), new Point(-1, -12)};
+        assertFalse(cmv.lic4(points, points.length, 3, 3));
+    }
+
+
 
     @Test
     void lic5_nullPoints_returnsFalse() {
@@ -124,7 +279,55 @@ class CMVTest {
     }
 
     @Test
-    void lic6() {
+    void lic6_returnsFalseForNoPointFurtherAwayThanDist() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(0, 0),
+                new Point(1, 0),
+                new Point(0, 0),
+                new Point(0, 3)
+        };
+
+        assertFalse(cmv.lic6(points, points.length, 3, 2.0));
+    }
+
+    @Test
+    void lic6_returnsFalseForNegativeDist() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(0, 0),
+                new Point(1, 0),
+                new Point(3, 0),
+                new Point(1, 0)
+        };
+
+        assertFalse(cmv.lic6(points, points.length, 3, -1));
+    }
+
+    @Test
+    void lic6_returnsFalseForN_PTSBeingLargerThanNUMPOINTS() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(0, 0),
+                new Point(1, 0),
+                new Point(3, 0),
+                new Point(1, 0)
+        };
+
+        assertFalse(cmv.lic6(points, points.length, 5, 1));
+    }
+
+    @Test
+    void lic6_returnsTrueForLastThreeElements() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(0, 0),
+                new Point(1, 0),
+                new Point(3, 0),
+                new Point(1, 0)
+        };
+
+        assertTrue(cmv.lic6(points, points.length, 3, 1));
     }
 
     @Test
