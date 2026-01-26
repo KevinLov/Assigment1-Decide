@@ -123,7 +123,25 @@ public class CMV {
         return false;
     }
 
-    boolean lic12() {
+    boolean lic12(Point[] points, int NUMPOINTS, double LENGTH1, double LENGTH2, int K_PTS) {
+        if (points == null || NUMPOINTS < 3 || points.length < NUMPOINTS || K_PTS < 1 || K_PTS > NUMPOINTS - 2 || LENGTH2 < 0)
+            return false;
+
+        // Represents the two pairs of points to match greater than LENGTH1 and LENGTH2 respectively
+        boolean pair1 = false;
+        boolean pair2 = false;
+
+        for (int i = 0; i < NUMPOINTS - K_PTS - 1; i++) {
+            double distance = points[i].distance(points[i + K_PTS + 1]);
+
+            if (distance > LENGTH1)
+                pair1 = true;
+            if (distance < LENGTH2)
+                pair2 = true;
+
+            if (pair1 && pair2)
+                return true;
+        }
         return false;
     }
 
