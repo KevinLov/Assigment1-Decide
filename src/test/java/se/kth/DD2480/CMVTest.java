@@ -17,33 +17,34 @@ class CMVTest {
     }
 
     @Test
-    void lic0_returnsFalse_whenPointsIsNull() {
+    void lic0_nullPoints_returnsFalse() {
         CMV cmv = new CMV();
-        assertFalse(cmv.lic0(null, 6, 0));
+        assertFalse(cmv.lic0(null, 1.0, 2));
     }
 
     @Test
-    void lic0_returnsFalse_whenNoDistanceGreaterThanLength() {
+    void lic0_NUMPOINTS_lessThan2_returnsFalse() {
         CMV cmv = new CMV();
-        Point[] points = {
-                new Point(0, 0),
-                new Point(3, 4), // distance = 5
-                new Point(6, 8)  // distance = 5
-        };
-
-        assertFalse(cmv.lic0(points, 5.0, points.length));
+        Point[] pts = { new Point(0, 0), new Point(10, 0) };
+        assertFalse(cmv.lic0(pts, 1.0, 0));
+        assertFalse(cmv.lic0(pts, 1.0, 1));
     }
+
     @Test
-    void lic0_returnsTrue_whenDistanceGreaterThanLength() {
+    void lic0_distanceStrictlyGreaterThanLength1_true() {
         CMV cmv = new CMV();
-        Point[] points = {
-                new Point(0, 0),
-                new Point(10, 0) // distance = 10
-        };
-
-        assertTrue(cmv.lic0(points, 5.0, points.length));
+        Point[] pts = { new Point(0, 0), new Point(2, 0) };
+        assertTrue(cmv.lic0(pts, 1.0, 2)); // dist=2 > 1
     }
- 
+
+    @Test
+    void lic0_distanceEqualToLength1_false() {
+        CMV cmv = new CMV();
+        Point[] pts = { new Point(0, 0), new Point(2, 0) };
+        assertFalse(cmv.lic0(pts, 2.0, 2)); // dist=2 NOT > 2
+    }
+
+
     void lic1_anyinput() {
         CMV cmv = new CMV();
         Point p1 = new Point(0,0);
@@ -243,35 +244,39 @@ class CMVTest {
 
 
     @Test
-    void lic5_returnsFalse_whenNotEnoughPoints() {
+    void lic5_nullPoints_returnsFalse() {
         CMV cmv = new CMV();
-        Point[] points = { new Point(1,1)};
-        assertFalse(cmv.lic5(points, 1));
+        assertFalse(cmv.lic5(null, 2));
     }
+
     @Test
-    void lic5_returnsFalse_whenXNeverDecreases() {
+    void lic5_NUMPOINTS_lessThan2_returnsFalse() {
         CMV cmv = new CMV();
-        Point[] points = {
-                new Point(0, 0),
-                new Point(1, 0),
-                new Point(2, 0)
-        };
-
-        assertFalse(cmv.lic5(points, points.length));
+        Point[] pts = { new Point(0, 0), new Point(-1, 0) };
+        assertFalse(cmv.lic5(pts, 0));
+        assertFalse(cmv.lic5(pts, 1));
     }
+
     @Test
-    void lic5_returnsTrue_whenXDecreases() {
+    void lic5_decreasingX_true() {
         CMV cmv = new CMV();
-        Point[] points = {
-                new Point(5, 0),
-                new Point(3, 0)
-        };
-
-        assertTrue(cmv.lic5(points, points.length));
+        Point[] pts = { new Point(2, 0), new Point(1, 0) };
+        assertTrue(cmv.lic5(pts, 2)); // 1 - 2 < 0
     }
 
+    @Test
+    void lic5_equalX_false() {
+        CMV cmv = new CMV();
+        Point[] pts = { new Point(2, 0), new Point(2, 5) };
+        assertFalse(cmv.lic5(pts, 2)); // 2 - 2 = 0 NOT < 0
+    }
 
-
+    @Test
+    void lic5_increaseThenDecrease_true() {
+        CMV cmv = new CMV();
+        Point[] pts = { new Point(0, 0), new Point(1, 0), new Point(0.5, 0) };
+        assertTrue(cmv.lic5(pts, 3)); // 0.5 - 1 < 0
+    }
 
     @Test
     void lic6_returnsFalseForNoPointFurtherAwayThanDist() {
@@ -438,47 +443,96 @@ class CMVTest {
     }
 
     @Test
-    void lic10_returnsFalse_whenParametersInvalid() {
+    void lic10_nullPoints_returnsFalse() {
         CMV cmv = new CMV();
-        Point[] points = {
-                new Point(0, 0),
-                new Point(1, 0),
-                new Point(2, 0)
-        };
-
-        assertFalse(cmv.lic10(points, 0, 0, 1.0, points.length));
+        assertFalse(cmv.lic10(null, 1, 1, 1.0, 5));
     }
+
     @Test
-    void lic10_returnsFalse_whenAllTriangleAreasTooSmall() {
+    void lic10_NUMPOINTS_lessThan5_returnsFalse() {
         CMV cmv = new CMV();
-        Point[] points = {
-                new Point(0, 0),
-                new Point(1, 0),
-                new Point(2, 0),
-                new Point(3, 0),
-                new Point(4, 0)
-        };
-
-        assertFalse(cmv.lic10(points, 1, 1, 1.0, points.length));
+        Point[] pts = { new Point(0,0), new Point(0,0), new Point(2,0), new Point(0,0),
+                new Point(0,2) };
+        assertFalse(cmv.lic10(pts, 1, 1, 0.1, 4));
     }
+
     @Test
-    void lic10_returnsTrue_whenTriangleAreaGreaterThanAREA1() {
+    void lic10_EPTS_or_FPTS_lessThan1_returnsFalse() {
+        CMV cmv = new CMV();
+        Point[] pts = { new Point(0,0), new Point(0,0), new Point(2,0), new Point(0,0),
+                new Point(0,2) };
+        assertFalse(cmv.lic10(pts, 0, 1, 0.1, 5));
+        assertFalse(cmv.lic10(pts, 1, 0, 0.1, 5));
+        assertFalse(cmv.lic10(pts, -1, 1, 0.1, 5));
+    }
+
+    @Test
+    void lic10_EplusF_greaterThan_NUMPOINTSminus3_returnsFalse() {
+        CMV cmv = new CMV();
+        Point[] pts = { new Point(0,0), new Point(0,0), new Point(2,0), new Point(0,0),
+                new Point(0,2) };
+        // NUMPOINTS=5 => NUMPOINTS-3 = 2. If E+F=3 => invalid
+        assertFalse(cmv.lic10(pts, 1, 2, 0.1, 5));
+    }
+
+    @Test
+    void lic10_boundary_EplusF_equalTo_NUMPOINTSminus3_isAllowed() {
+        CMV cmv = new CMV();
+        // NUMPOINTS=5, E=1, F=1 => E+F=2 = NUMPOINTS-3 OK
+        Point[] pts = { new Point(0,0), new Point(0,0), new Point(2,0), new Point(0,0),
+                new Point(0,2) };
+        assertTrue(cmv.lic10(pts, 1, 1, 1.0, 5));
+    }
+
+    @Test
+    void lic10_areaStrictlyGreaterThanAREA1_true_equal_false() {
+        CMV cmv = new CMV();
+        Point[] pts = { new Point(0,0), new Point(0,0), new Point(2,0), new Point(0,0),
+                new Point(0,2) }; // area=2
+        assertTrue(cmv.lic10(pts, 1, 1, 1.9999, 5));
+        assertFalse(cmv.lic10(pts, 1, 1, 2.0, 5)); // NOT >
+    }
+
+    @Test
+    void lic11_returnsTrueForLastThreeElements() {
         CMV cmv = new CMV();
         Point[] points = {
                 new Point(6, 1),
-                new Point(0, 4),
-                new Point(3, 3),
-                new Point(8, 0),
+                new Point(7, 4),
+                new Point(8, 3),
+                new Point(9, 0),
                 new Point(0, 0)
         };
-
-        assertTrue(cmv.lic10(points, 1, 1, 5.0, points.length));
+        
+        assertTrue(cmv.lic11(points, points.length, 1));
     }
 
-
+    @Test
+    void lic11_returnsFalseForRisingXValues() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(1, 1),
+                new Point(2, 4),
+                new Point(3, 3),
+                new Point(4, 0),
+                new Point(5, 0)
+        };
+        
+        assertFalse(cmv.lic11(points, points.length, 1));
+    }
 
     @Test
-    void lic11() {
+    void lic11_returnsFalseForG_PTSBeingLargerThanNUMPOINTSMinusTwo() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(1, 1),
+                new Point(2, 4),
+                new Point(3, 3),
+                new Point(4, 0),
+                new Point(5, 0)
+        };
+        
+        assertFalse(cmv.lic11(points, points.length, 4));
     }
 
     @Test
