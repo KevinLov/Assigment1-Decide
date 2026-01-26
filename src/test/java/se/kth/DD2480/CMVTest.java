@@ -95,7 +95,7 @@ class CMVTest {
 
 
     @Test
-    void lic6_any_input() {
+    void lic6_returnsFalseForNoPointFurtherAwayThanDist() {
         CMV cmv = new CMV();
         Point[] points = {
                 new Point(0, 0),
@@ -108,7 +108,7 @@ class CMVTest {
     }
 
     @Test
-    void lic6_invalid_input() {
+    void lic6_returnsFalseForNegativeDistAndN_PTSBeingLargerThanNUMPOINTS() {
         CMV cmv = new CMV();
         Point[] points = {
                 new Point(0, 0),
@@ -121,7 +121,7 @@ class CMVTest {
     }
 
     @Test
-    void lic6_true_input() {
+    void lic6_returnsTrueForLastThreeElements() {
         CMV cmv = new CMV();
         Point[] points = {
                 new Point(0, 0),
