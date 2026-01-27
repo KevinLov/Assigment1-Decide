@@ -1,4 +1,42 @@
 package se.kth.DD2480;
 
 public class FUV {
+    boolean[] arr; //vector
+    boolean launch; //true if all elements in vector is true
+
+    public FUV() {
+        this.arr = new boolean[15];
+        this.launch = false;
+    }
+
+    public FUV(PUM pum, boolean[] puv) { //since PUV is given as input its assumed to be an array
+        this.arr = new boolean[15];
+        this.launch = true;
+        for (int i = 0; i < 15; i++) {
+            if (!puv[i]) { //false if coresponding LIC should not hold back launch
+                this.arr[i] = true;
+                continue;
+            }
+            boolean allTrue = true;
+            for (int j = 0; j < 15; j++) { //the whole row in PUM must be true for FUV to be true
+                if (!pum.arr[i][j]) {
+                    allTrue = false;
+                    this.launch = false;
+                    break;
+                }
+            }
+            this.arr[i] = allTrue;
+        }
+    }
+
+    public boolean checkLaunch(){ //check if all elements in FUV is true
+        this.launch = true;
+        for (int i = 0; i < 15; i++) {
+            if (!this.arr[i]) {
+                this.launch = false;
+                break;
+            }
+        }
+        return this.launch;
+    }
 }
