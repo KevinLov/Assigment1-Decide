@@ -53,7 +53,36 @@ public class CMV {
         return false;
     }
 
-    boolean lic2() {
+    boolean lic2(Point[] points, int NUMPOINTS, double PI, double EPSILON) {
+
+        if (points == null || points.length < 3 || NUMPOINTS != points.length || EPSILON < 0 || EPSILON >= PI || PI != 3.1415926535)
+            return false;
+
+        for (int i = 1; i < NUMPOINTS - 1; i++) {
+            Point a = points[i - 1];
+            Point b = points[i];
+            Point c = points[i + 1];
+
+            double ab = a.distance(b);
+            double cb = b.distance(c);
+
+            // If either a or c coincides with b we skip to next triplet or points
+            if (ab < 0.000001 || cb < 0.000001)
+                continue;
+
+            // Vectors
+            Point u = new Point(a.x - b.x, a.y - b.y);
+            Point v = new Point(c.x - b.x, c.y - b.y);
+
+            double numerator    = u.x*v.x + u.y*v.y;
+            double denominator  = ab * cb;
+            double cos = numerator / denominator;
+
+            double angle = Math.acos(cos);
+
+            if (angle < (PI - EPSILON) || angle > (PI + EPSILON))
+                return true;
+        }
         return false;
     }
 
@@ -187,7 +216,7 @@ public class CMV {
 
         cmv[0] = lic0(points, p.LENGTH1, NUMPOINTS);
         cmv[1] = lic1(points, NUMPOINTS, p.RADIUS1);
-        cmv[2] = lic2();
+        cmv[2] = lic2(points, NUMPOINTS, 3.1415926535, p.EPSILON); // PI might be up for change in future
         cmv[3] = lic3(points, NUMPOINTS, p.AREA1);
         cmv[4] = lic4(points, NUMPOINTS, p.Q_PTS, p.QUADS);
         cmv[5] = lic5(points, NUMPOINTS);

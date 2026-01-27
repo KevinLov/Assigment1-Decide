@@ -7,9 +7,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CMVTest {
+    CMV cmv;
 
     @BeforeEach
     void setUp() {
+        cmv = new CMV();
     }
 
     @AfterEach
@@ -77,7 +79,38 @@ class CMVTest {
     }
 
     @Test
-    void lic2() {
+    void lic2_returnsTrue_whenAngleIsLessThanPiMinusEpsilon() {
+        CMV cmv = new CMV();
+        Point[] points90degrees = {new Point(0, 1), new Point(0, 0), new Point(1, 0)};
+
+        assertTrue(cmv.lic2(points90degrees, 3, 3.1415926535, 0.000001)); // Points, NUMPOINTS, PI, EPSILON
+    }
+
+    @Test
+    void lic2_returnsFalse_whenPointsCollide() {
+        CMV cmv = new CMV();
+        Point[] collidingPoints = {new Point(0, 1), new Point(0, 0), new Point(0, 0)};
+
+        assertFalse(cmv.lic2(collidingPoints, 3, 3.1415926535, 0.000001)); // Points, NUMPOINTS, PI, EPSILON
+    }
+
+    @Test
+    void lic2_returnsFalse_whenInputParametersAreWrong() {
+        CMV cmv = new CMV();
+        Point[] validPoints = {new Point(0, 1), new Point(0, 0), new Point(1, 0)};
+
+        assertFalse(cmv.lic2(null, 3, 3.1415926535, 1));              // Points is invalid
+        assertFalse(cmv.lic2(validPoints, 2, 3.1415926535, 1));             // NUMPOINTS is invalid
+        assertFalse(cmv.lic2(validPoints, 3, 1, 0));                        // EPSILON is invalid
+        assertFalse(cmv.lic2(validPoints, 3, 3.1415926535, 3.1415926535));  // EPSILON is invalid
+    }
+
+    @Test
+    void lic2_returnsFalse_whenPointsAreOnStraightLine() {
+        CMV cmv = new CMV();
+        Point[] straightLine = {new Point(0, 0), new Point(1, 1), new Point(2, 2)};
+
+        assertFalse(cmv.lic2(straightLine, 3, 3.1415926535, 0.000001)); // Points, NUMPOINTS, PI, EPSILON
     }
 
     @Test
