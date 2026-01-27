@@ -29,25 +29,13 @@ public class CMV {
             return false;
         }
         for (int i = 0; i < NUMPOINTS-2; i++) {
-
-            //r = abc/4A where r is radius of the triangles Circumcircle, a,b,c is the length of the sides between the points and A is the triangles Area
             Point a = points[i];
             Point b = points[i+1];
             Point c = points[i+2];
-            double sideA = a.distance(b);
-            double sideB = b.distance(c);
-            double sideC = c.distance(a);
-            double area = Point.triangleArea(a, b, c);
-            if (area < 0.000001) {
-                if (sideA/2 > RADIUS1 || sideB/2 > RADIUS1 || sideC/2 > RADIUS1) {
-                    return true;
-                }
-            } else {
-                //r = abc/4A
-                double circumradius = (sideA*sideB*sideC)/(4*area);
-                if (circumradius > RADIUS1) {
-                    return true;
-                }
+
+            double mecRadius = (Point.minimalEnclosingCircleRadius(a, b, c));
+            if (mecRadius > RADIUS1) {
+                return true;
             }
         }
         return false;
@@ -165,7 +153,23 @@ public class CMV {
         return false;
     }
 
-    boolean lic8() {
+    boolean lic8(Point[] points, int NUMPOINTS, int A_PTS, int B_PTS, double RADIUS1) {
+        assert points != null : "'points' must not be null";
+        assert NUMPOINTS >= 5 : "'NUMPOINTS' must be >= 5";
+        assert A_PTS >= 1 : "'A_PTS' must be >= 1";
+        assert B_PTS >= 1 : "'B_PTS' must be >= 1";
+        assert A_PTS + B_PTS <= NUMPOINTS - 3 : "A_PTS + B_PTS must be <= NUMPOINTS - 3";
+        assert RADIUS1 >= 0 : "'RADIUS1' must be >= 0";
+
+        for (int i = 0; i <= NUMPOINTS - 3 - (A_PTS + B_PTS); ++i) {
+            Point a = points[i];
+            Point b = points[i + A_PTS + 1];
+            Point c = points[i + A_PTS + B_PTS + 2];
+
+            double mecRadius = Point.minimalEnclosingCircleRadius(a, b, c);
+            if (mecRadius > RADIUS1) return true;
+        }
+
         return false;
     }
 
@@ -250,7 +254,7 @@ public class CMV {
         cmv[5] = lic5(points, NUMPOINTS);
         cmv[6] = lic6(points, NUMPOINTS, p.N_PTS, p.DIST);
         cmv[7] = lic7(points, NUMPOINTS, p.LENGTH1, p.K_PTS);
-        cmv[8] = lic8();
+        cmv[8] = lic8(points, NUMPOINTS, p.A_PTS, p.B_PTS, p.RADIUS1);
         cmv[9] = lic9();
         cmv[10] = lic10(points,p.E_PTS,p.F_PTS,p.AREA1,NUMPOINTS);
         cmv[11] = lic11(points, NUMPOINTS, p.G_PTS);

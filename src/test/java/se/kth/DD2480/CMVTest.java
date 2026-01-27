@@ -398,7 +398,135 @@ class CMVTest {
     }
 
     @Test
-    void lic8() {
+    void lic8_returnsFalse_whenPointsFitWithinRadius1() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(0, 0),
+                new Point(1, 0),
+                new Point(2, 0),
+                new Point(3, 0),
+                new Point(4, 0)
+        };
+        assertFalse(cmv.lic8(points, points.length, 1, 1, 10.0));
+    }
+
+    @Test
+    void lic8_returnsFalse_whenPointsFitOnRadius1() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(0, 0),
+                new Point(2, 0),
+                new Point(4, 0),
+                new Point(6, 0),
+                new Point(8, 0)
+        };
+        assertFalse(cmv.lic8(points, points.length, 1, 1, 4.0));
+    }
+
+    @Test
+    void lic8_throwsError_whenNUMPOINTSLessThan5() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(0, 0),
+                new Point(1, 0),
+                new Point(2, 0),
+                new Point(3, 0),
+                new Point(4, 0)
+        };
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic8(points, 4, 1, 1, 1.0);
+        });
+        assertEquals("'NUMPOINTS' must be >= 5", error.getMessage());
+    }
+
+    @Test
+    void lic8_throwsError_whenAPTSLessThan1() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(0, 0),
+                new Point(1, 0),
+                new Point(2, 0),
+                new Point(3, 0),
+                new Point(4, 0)
+        };
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic8(points, points.length, 0, 1, 1.0);
+        });
+        assertEquals("'A_PTS' must be >= 1", error.getMessage());
+    }
+
+    @Test
+    void lic8_throwsError_whenBPTSLessThan1() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(0, 0),
+                new Point(1, 0),
+                new Point(2, 0),
+                new Point(3, 0),
+                new Point(4, 0)
+        };
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic8(points, points.length, 1, 0, 1.0);
+        });
+        assertEquals("'B_PTS' must be >= 1", error.getMessage());
+    }
+
+    @Test
+    void lic8_throwsError_whenSeparationTooLarge() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(0, 0),
+                new Point(1, 0),
+                new Point(2, 0),
+                new Point(3, 0),
+                new Point(4, 0)
+        };
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic8(points, points.length, 1, 2, 1.0);
+        });
+        assertEquals("A_PTS + B_PTS must be <= NUMPOINTS - 3",  error.getMessage());
+    }
+
+    @Test
+    void lic8_throwsError_whenRADIUS1LessThan0() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(0, 0),
+                new Point(1, 0),
+                new Point(2, 0),
+                new Point(3, 0),
+                new Point(4, 0)
+        };
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic8(points, points.length, 1, 1, -1.0);
+        });
+        assertEquals("'RADIUS1' must be >= 0", error.getMessage());
+    }
+
+    @Test
+    void lic8_returnsTrue_whenPointsDoNotFitWithinRadius1() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(0, 0),
+                new Point(1, 0),
+                new Point(2, 0),
+                new Point(3, 0),
+                new Point(4, 0)
+        };
+        assertTrue(cmv.lic8(points, points.length, 1, 1, 1.0));
+    }
+
+    @Test
+    void lic8_returnsTrue_whenNonCollinearPointsDoNotFitWithinRadius1() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(0, 0),
+                new Point(1, 0),
+                new Point(1, 1),
+                new Point(2, 0),
+                new Point(3, 0)
+        };
+        assertTrue(cmv.lic8(points, points.length, 1, 1, 1.0));
     }
 
     @Test
