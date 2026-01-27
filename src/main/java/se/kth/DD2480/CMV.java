@@ -234,7 +234,29 @@ public class CMV {
         return false;
     }
 
-    boolean lic14() {
+    boolean lic14(Point[] points, int NUMPOINTS, int E_PTS, int F_PTS, double AREA1, double AREA2) {
+        assert points != null : "'points' must not be null";
+        assert NUMPOINTS >= 5 : "'NUMPOINTS' must be >= 5";
+        assert E_PTS >= 1 : "'E_PTS' must be >= 1";
+        assert F_PTS >= 1 : "'F_PTS' must be >= 1";
+        assert E_PTS + F_PTS <= NUMPOINTS - 3 : "E_PTS + F_PTS must be <= NUMPOINTS - 3";
+        assert AREA1 >= 0 : "'AREA1' must be >= 0";
+        assert AREA2 >= 0 : "'AREA2' must be >= 0";
+
+        boolean area1Condition = false;
+        boolean area2Condition = false;
+        for(int i = 1; i <= NUMPOINTS - 3 - (E_PTS + F_PTS) + 1; i++) {
+
+            Point a = points[i-1];
+            Point b = points[i + E_PTS];
+            Point c = points[i + E_PTS + F_PTS + 1];
+
+            double area = Point.triangleArea(a, b, c);
+
+            if(area > AREA1) area1Condition = true;
+            if(area < AREA2) area2Condition = true;
+            if(area1Condition && area2Condition) return true;
+        }
         return false;
     }
 
@@ -260,7 +282,7 @@ public class CMV {
         cmv[11] = lic11(points, NUMPOINTS, p.G_PTS);
         cmv[12] = lic12(points, NUMPOINTS, p.LENGTH1, p.LENGTH2, p.K_PTS);
         cmv[13] = lic13();
-        cmv[14] = lic14();
+        cmv[14] = lic14(points, NUMPOINTS, p.E_PTS, p.F_PTS, p.AREA1, p.AREA2);
         cmv[15] = lic15();
 
         return cmv;
