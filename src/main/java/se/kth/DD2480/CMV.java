@@ -53,7 +53,36 @@ public class CMV {
         return false;
     }
 
-    boolean lic2() {
+    boolean lic2(Point[] points, int NUMPOINTS, double PI, double EPSILON) {
+
+        if (points == null || points.length < 3 || NUMPOINTS != points.length || EPSILON < 0 || EPSILON >= PI || PI != 3.1415926535)
+            return false;
+
+        for (int i = 1; i < NUMPOINTS - 1; i++) {
+            Point a = points[i - 1];
+            Point b = points[i];
+            Point c = points[i + 1];
+
+            double ab = a.distance(b);
+            double cb = b.distance(c);
+
+            // If either a or c coincides with b we skip to next triplet or points
+            if (ab < 0.000001 || cb < 0.000001)
+                continue;
+
+            // Vectors
+            Point u = new Point(a.x - b.x, a.y - b.y);
+            Point v = new Point(c.x - b.x, c.y - b.y);
+
+            double numerator    = u.x*v.x + u.y*v.y;
+            double denominator  = ab * cb;
+            double cos = numerator / denominator;
+
+            double angle = Math.acos(cos);
+
+            if (angle < (PI - EPSILON) || angle > (PI + EPSILON))
+                return true;
+        }
         return false;
     }
 
@@ -122,7 +151,17 @@ public class CMV {
         return false;
     }
 
-    boolean lic7() {
+    boolean lic7(Point[] points, int NUMPOINTS, double LENGTH1, int K_PTS) {
+        if (points == null || NUMPOINTS < 3 || points.length < NUMPOINTS || K_PTS < 1 || K_PTS > (NUMPOINTS-2))
+            return false;
+
+        for (int i = 0; i < NUMPOINTS - K_PTS - 1; i++) {
+            Point a = points[i];
+            Point b = points[i + K_PTS + 1];
+
+            if (a.distance(b) > LENGTH1)
+                return true;
+        }
         return false;
     }
 
@@ -205,12 +244,12 @@ public class CMV {
 
         cmv[0] = lic0(points, p.LENGTH1, NUMPOINTS);
         cmv[1] = lic1(points, NUMPOINTS, p.RADIUS1);
-        cmv[2] = lic2();
+        cmv[2] = lic2(points, NUMPOINTS, 3.1415926535, p.EPSILON); // PI might be up for change in future
         cmv[3] = lic3(points, NUMPOINTS, p.AREA1);
         cmv[4] = lic4(points, NUMPOINTS, p.Q_PTS, p.QUADS);
         cmv[5] = lic5(points, NUMPOINTS);
         cmv[6] = lic6(points, NUMPOINTS, p.N_PTS, p.DIST);
-        cmv[7] = lic7();
+        cmv[7] = lic7(points, NUMPOINTS, p.LENGTH1, p.K_PTS);
         cmv[8] = lic8();
         cmv[9] = lic9();
         cmv[10] = lic10(points,p.E_PTS,p.F_PTS,p.AREA1,NUMPOINTS);
