@@ -7,9 +7,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CMVTest {
+    CMV cmv;
 
     @BeforeEach
     void setUp() {
+        cmv = new CMV();
     }
 
     @AfterEach
@@ -77,7 +79,38 @@ class CMVTest {
     }
 
     @Test
-    void lic2() {
+    void lic2_returnsTrue_whenAngleIsLessThanPiMinusEpsilon() {
+        CMV cmv = new CMV();
+        Point[] points90degrees = {new Point(0, 1), new Point(0, 0), new Point(1, 0)};
+
+        assertTrue(cmv.lic2(points90degrees, 3, 3.1415926535, 0.000001)); // Points, NUMPOINTS, PI, EPSILON
+    }
+
+    @Test
+    void lic2_returnsFalse_whenPointsCollide() {
+        CMV cmv = new CMV();
+        Point[] collidingPoints = {new Point(0, 1), new Point(0, 0), new Point(0, 0)};
+
+        assertFalse(cmv.lic2(collidingPoints, 3, 3.1415926535, 0.000001)); // Points, NUMPOINTS, PI, EPSILON
+    }
+
+    @Test
+    void lic2_returnsFalse_whenInputParametersAreWrong() {
+        CMV cmv = new CMV();
+        Point[] validPoints = {new Point(0, 1), new Point(0, 0), new Point(1, 0)};
+
+        assertFalse(cmv.lic2(null, 3, 3.1415926535, 1));              // Points is invalid
+        assertFalse(cmv.lic2(validPoints, 2, 3.1415926535, 1));             // NUMPOINTS is invalid
+        assertFalse(cmv.lic2(validPoints, 3, 1, 0));                        // EPSILON is invalid
+        assertFalse(cmv.lic2(validPoints, 3, 3.1415926535, 3.1415926535));  // EPSILON is invalid
+    }
+
+    @Test
+    void lic2_returnsFalse_whenPointsAreOnStraightLine() {
+        CMV cmv = new CMV();
+        Point[] straightLine = {new Point(0, 0), new Point(1, 1), new Point(2, 2)};
+
+        assertFalse(cmv.lic2(straightLine, 3, 3.1415926535, 0.000001)); // Points, NUMPOINTS, PI, EPSILON
     }
 
     @Test
@@ -331,7 +364,37 @@ class CMVTest {
     }
 
     @Test
-    void lic7() {
+    void lic7_returnTrue_WhenTwoPointsSepByK_PTSareMoreThanLENGTH1apart() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(-1, -1), new Point(1, 0), new Point(5, 5)};
+
+        assertTrue(cmv.lic7(points, 3, 3, 1)); // POINTS, NUMPOINTS, LENGHT1, K_PTS
+    }
+
+    @Test
+    void lic7_returnFalse_WhenTwoPointsSepByK_PTSareLENGTH1apart() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 0), new Point(1, 0), new Point(3, 0)};
+
+        assertFalse(cmv.lic7(points, 3, 3, 1)); // POINTS, NUMPOINTS, LENGHT1, K_PTS
+    }
+
+    @Test
+    void lic7_returnFalse_WhenTwoPointsSepByK_PTSareLessThanLENGTH1apart() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 0), new Point(1, 0), new Point(2, 0)};
+
+        assertFalse(cmv.lic7(points, 3, 3, 1)); // POINTS, NUMPOINTS, LENGHT1, K_PTS
+    }
+
+    @Test
+    void lic7_returnFalse_WhenInvalidInput() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 0), new Point(1, 0), new Point(2, 0)};
+
+        assertFalse(cmv.lic7(points, 2, 3, 1)); // NUMPOINTS invalid
+        assertFalse(cmv.lic7(points, 3, 3, 2)); // K_PTS invalid
+        assertFalse(cmv.lic7(null, 3, 3, 2)); // POINTS invalid
     }
 
     @Test
@@ -361,7 +424,7 @@ class CMVTest {
     }
 
     @Test
-    void lic8_returnsFalse_whenNUMPOINTSLessThan5() {
+    void lic8_throwsError_whenNUMPOINTSLessThan5() {
         CMV cmv = new CMV();
         Point[] points = {
                 new Point(0, 0),
@@ -370,11 +433,14 @@ class CMVTest {
                 new Point(3, 0),
                 new Point(4, 0)
         };
-        assertFalse(cmv.lic8(points, 4, 1, 1, 1.0));
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic8(points, 4, 1, 1, 1.0);
+        });
+        assertEquals("'NUMPOINTS' must be >= 5", error.getMessage());
     }
 
     @Test
-    void lic8_returnsFalse_whenAPTSLessThan1() {
+    void lic8_throwsError_whenAPTSLessThan1() {
         CMV cmv = new CMV();
         Point[] points = {
                 new Point(0, 0),
@@ -383,11 +449,14 @@ class CMVTest {
                 new Point(3, 0),
                 new Point(4, 0)
         };
-        assertFalse(cmv.lic8(points, points.length, 0, 1, 1.0));
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic8(points, points.length, 0, 1, 1.0);
+        });
+        assertEquals("'A_PTS' must be >= 1", error.getMessage());
     }
 
     @Test
-    void lic8_returnsFalse_whenBPTSLessThan1() {
+    void lic8_throwsError_whenBPTSLessThan1() {
         CMV cmv = new CMV();
         Point[] points = {
                 new Point(0, 0),
@@ -396,11 +465,14 @@ class CMVTest {
                 new Point(3, 0),
                 new Point(4, 0)
         };
-        assertFalse(cmv.lic8(points, points.length, 1, 0, 1.0));
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic8(points, points.length, 1, 0, 1.0);
+        });
+        assertEquals("'B_PTS' must be >= 1", error.getMessage());
     }
 
     @Test
-    void lic8_returnsFalse_whenSeparationTooLarge() {
+    void lic8_throwsError_whenSeparationTooLarge() {
         CMV cmv = new CMV();
         Point[] points = {
                 new Point(0, 0),
@@ -409,7 +481,26 @@ class CMVTest {
                 new Point(3, 0),
                 new Point(4, 0)
         };
-        assertFalse(cmv.lic8(points, points.length, 1, 2, 1.0));
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic8(points, points.length, 1, 2, 1.0);
+        });
+        assertEquals("A_PTS + B_PTS must be <= NUMPOINTS - 3",  error.getMessage());
+    }
+
+    @Test
+    void lic8_throwsError_whenRADIUS1LessThan0() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(0, 0),
+                new Point(1, 0),
+                new Point(2, 0),
+                new Point(3, 0),
+                new Point(4, 0)
+        };
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic8(points, points.length, 1, 1, -1.0);
+        });
+        assertEquals("'RADIUS1' must be >= 0", error.getMessage());
     }
 
     @Test
@@ -535,8 +626,56 @@ class CMVTest {
         assertFalse(cmv.lic11(points, points.length, 4));
     }
 
+    /**
+     * Tests if two separate pairs K_PTS apart fit criteria.
+     * Criteria for LIC to be true: One pair more than LENGHT1 apart and one pair less than LENGTH2 apart
+     */
     @Test
-    void lic12() {
+    void lic12_returnsTrue_whenTwoSeparatePairsOfPointsK_PTSapartFitCriteria() {
+        CMV cmv = new CMV();
+        // points[0] and points[2] are more than 3 apart
+        // points[1] and points[3] are less than 2 apart
+        Point[] points = {new Point(-1, -1), new Point(1, 0), new Point(5, 5), new Point(0, 1) };
+
+        assertTrue(cmv.lic12(points, 4, 3, 2, 1)); // POINTS, NUMPOINTS, LENGHT1, LENGHT2, K_PTS
+    }
+
+    /**
+     * Criteria for LIC to be true: One pair more than LENGHT1 apart and one pair less than LENGTH2 apart
+     */
+    @Test
+    void lic12_returnsFalse_whenOnlyOnePairFitsCriteria() {
+        CMV cmv = new CMV();
+        // points[0] and points[2] are more than 3 apart
+        // No pair of paint with 1 element in between are less than 1 distance apart.
+        Point[] points = {new Point(-1, -1), new Point(1, 0), new Point(5, 5), new Point(0, 1) };
+
+        assertFalse(cmv.lic12(points, 4, 3, 1, 1)); // POINTS, NUMPOINTS, LENGHT1, LENGHT2, K_PTS
+    }
+
+    @Test
+    void lic12_returnsFalse_whenNoPairFitsCriteria() {
+        CMV cmv = new CMV();
+        // No pair of paint with 1 element in between are more than 10 distance apart.
+        // No pair of paint with 1 element in between are less than 1 distance apart.
+        Point[] points = {new Point(-1, -1), new Point(1, 0), new Point(5, 5), new Point(0, 1) };
+
+        assertFalse(cmv.lic12(points, 4, 10, 1, 1)); // POINTS, NUMPOINTS, LENGHT1, LENGHT2, K_PTS
+    }
+
+    @Test
+    void lic12_returnsFalse_whenInputParamIsInvalid() {
+        CMV cmv = new CMV();
+        // Valid points for LIC to return true
+        Point[] points = {new Point(-1, -1), new Point(1, 0), new Point(5, 5), new Point(0, 1) };
+
+        assertFalse(cmv.lic12(points, 2, 10, 1, 1));        // NUMPOINTS invalid
+        assertFalse(cmv.lic12(points, 4, 10, -1, 1));       // LENGTH2   invalid
+        assertFalse(cmv.lic12(points, 4, 10, 1, 3));        // K_PTS     invalid in regard to NUMPOINTS
+        assertFalse(cmv.lic12(null, 4, 10, 1, 1));    // POINTS    invalid
+
+
+
     }
 
     @Test
