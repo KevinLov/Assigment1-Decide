@@ -142,8 +142,12 @@ public class CMV {
     }
 
     boolean lic7(Point[] points, int NUMPOINTS, double LENGTH1, int K_PTS) {
-        if (points == null || NUMPOINTS < 3 || points.length < NUMPOINTS || K_PTS < 1 || K_PTS > (NUMPOINTS-2))
-            return false;
+        assert points != null : "'points' must not be null";
+        assert NUMPOINTS >= 3 : "'NUMPOINTS' must be >= 3";
+        assert points.length >= NUMPOINTS : "'points.length' must be >= NUMPOINTS";
+        assert K_PTS >= 1 : "'K_PTS' must be >= 1";
+        assert K_PTS <= (NUMPOINTS - 2) : "'K_PTS' must be <= NUMPOINTS - 2";
+        assert LENGTH1 >= 0 : "'LENGTH1' must be >= 0";
 
         for (int i = 0; i < NUMPOINTS - K_PTS - 1; i++) {
             Point a = points[i];
