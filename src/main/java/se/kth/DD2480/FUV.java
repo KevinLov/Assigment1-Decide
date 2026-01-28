@@ -23,7 +23,7 @@ public class FUV {
             }
             boolean allTrue = true;
             for (int j = 0; j < 15; j++) { //the whole row in PUM must be true for FUV to be true
-                if (!pum.arr[i][j]) {
+                if (!pum.arr[i][j] && j!=i) {
                     allTrue = false;
                     this.launch = false;
                     break;

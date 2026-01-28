@@ -50,6 +50,18 @@ class FUVTest {
     }
 
     @Test
+    void FUVreturnTrueWhenOneElementInPUVIsTrueButRowIsTrue() {
+        PUM pum = new PUM();
+        boolean[] puv = new boolean[15];
+        for (int j = 1; j < 15; j++) { //we skip the first element because we don't check the diagonal (pum[i][j] when j==i)
+            pum.arr[0][j] = true; //make row 0 all true
+        }
+        puv[0] = true; //only first LIC should hold back launch but pum row 0 is not all true
+        FUV fuv = new FUV(pum, puv);
+        assertTrue(fuv.launch);
+    }
+
+    @Test
     void FUVassertThrowWhenPUVNot15Elements() {
         PUM pum = new PUM();
         boolean[] puv = new boolean[14];
