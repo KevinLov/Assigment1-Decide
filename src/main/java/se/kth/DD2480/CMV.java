@@ -77,6 +77,7 @@ public class CMV {
     boolean lic3(Point[] points, int NUMPOINTS, double AREA1) {
         assert points != null : "'points' must not be null";
         assert NUMPOINTS >= 3 : "'NUMPOINTS' must be >= 3";
+        assert AREA1 >= 0 : "'AREA1' must be >= 0";
 
         for (int i = 0; i <= NUMPOINTS - 3; i++) {
             double areaOfPoints = Point.triangleArea(points[i], points[i + 1], points[i + 2]);

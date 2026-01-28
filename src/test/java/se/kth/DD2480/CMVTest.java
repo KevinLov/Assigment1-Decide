@@ -147,6 +147,16 @@ class CMVTest {
     }
 
     @Test
+    void lic3_throwsError_whenArea1IsLessThanZero() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 0), new Point(0, 10), new Point(10, 0)};
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic3(points, 3, -1.0);
+        });
+        assertEquals("'AREA1' must be >= 0", error.getMessage());
+    }
+
+    @Test
     void lic3_returnsTrue_whenFirstPointsHaveValidArea() {
         CMV cmv = new CMV();
         Point[] points = {
