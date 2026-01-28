@@ -20,4 +20,33 @@ public class Point {
                         + c.x * (a.y - b.y)
         );
     }
+
+    /**
+     * Calculates the minimal enclosing circle radius for the triangle created by
+     * connecting three Points.
+     * <p>
+     * For triangles with a non-zero area, this is done by calculating the radius
+     * of the triangle's circumcircle (Side A * Side B * Side C) / (4 * Area).
+     * When the points are collinear, the minimal enclosing circle has a radius
+     * equal to the longest side divided by 2.
+     * <p>
+     * A threshold of 0.000001 is used for the area when determining collinearity.
+     *
+     * @param a Point A
+     * @param b Point B
+     * @param c Point C
+     * @return the radius of the minimal enclosing circle for the three points
+     */
+     static double minimalEnclosingCircleRadius(Point a, Point b, Point c) {
+        double sideA = a.distance(b);
+        double sideB = b.distance(c);
+        double sideC = c.distance(a);
+        double area = Point.triangleArea(a, b, c);
+
+        if (area > 0.000001) {
+            return (sideA * sideB * sideC) / (4 * area);
+        } else {
+            return Math.max(sideA, Math.max(sideB, sideC)) / 2;
+        }
+    }
 }

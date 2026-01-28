@@ -29,31 +29,48 @@ public class CMV {
             return false;
         }
         for (int i = 0; i < NUMPOINTS-2; i++) {
-
-            //r = abc/4A where r is radius of the triangles Circumcircle, a,b,c is the length of the sides between the points and A is the triangles Area
             Point a = points[i];
             Point b = points[i+1];
             Point c = points[i+2];
-            double sideA = a.distance(b);
-            double sideB = b.distance(c);
-            double sideC = c.distance(a);
-            double area = Point.triangleArea(a, b, c);
-            if (area < 0.000001) {
-                if (sideA/2 > RADIUS1 || sideB/2 > RADIUS1 || sideC/2 > RADIUS1) {
-                    return true;
-                }
-            } else {
-                //r = abc/4A
-                double circumradius = (sideA*sideB*sideC)/(4*area);
-                if (circumradius > RADIUS1) {
-                    return true;
-                }
+
+            double mecRadius = (Point.minimalEnclosingCircleRadius(a, b, c));
+            if (mecRadius > RADIUS1) {
+                return true;
             }
         }
         return false;
     }
 
-    boolean lic2() {
+    boolean lic2(Point[] points, int NUMPOINTS, double PI, double EPSILON) {
+
+        if (points == null || points.length < 3 || NUMPOINTS != points.length || EPSILON < 0 || EPSILON >= PI || PI != 3.1415926535)
+            return false;
+
+        for (int i = 1; i < NUMPOINTS - 1; i++) {
+            Point a = points[i - 1];
+            Point b = points[i];
+            Point c = points[i + 1];
+
+            double ab = a.distance(b);
+            double cb = b.distance(c);
+
+            // If either a or c coincides with b we skip to next triplet or points
+            if (ab < 0.000001 || cb < 0.000001)
+                continue;
+
+            // Vectors
+            Point u = new Point(a.x - b.x, a.y - b.y);
+            Point v = new Point(c.x - b.x, c.y - b.y);
+
+            double numerator    = u.x*v.x + u.y*v.y;
+            double denominator  = ab * cb;
+            double cos = numerator / denominator;
+
+            double angle = Math.acos(cos);
+
+            if (angle < (PI - EPSILON) || angle > (PI + EPSILON))
+                return true;
+        }
         return false;
     }
 
@@ -122,11 +139,37 @@ public class CMV {
         return false;
     }
 
-    boolean lic7() {
+    boolean lic7(Point[] points, int NUMPOINTS, double LENGTH1, int K_PTS) {
+        if (points == null || NUMPOINTS < 3 || points.length < NUMPOINTS || K_PTS < 1 || K_PTS > (NUMPOINTS-2))
+            return false;
+
+        for (int i = 0; i < NUMPOINTS - K_PTS - 1; i++) {
+            Point a = points[i];
+            Point b = points[i + K_PTS + 1];
+
+            if (a.distance(b) > LENGTH1)
+                return true;
+        }
         return false;
     }
 
-    boolean lic8() {
+    boolean lic8(Point[] points, int NUMPOINTS, int A_PTS, int B_PTS, double RADIUS1) {
+        assert points != null : "'points' must not be null";
+        assert NUMPOINTS >= 5 : "'NUMPOINTS' must be >= 5";
+        assert A_PTS >= 1 : "'A_PTS' must be >= 1";
+        assert B_PTS >= 1 : "'B_PTS' must be >= 1";
+        assert A_PTS + B_PTS <= NUMPOINTS - 3 : "A_PTS + B_PTS must be <= NUMPOINTS - 3";
+        assert RADIUS1 >= 0 : "'RADIUS1' must be >= 0";
+
+        for (int i = 0; i <= NUMPOINTS - 3 - (A_PTS + B_PTS); ++i) {
+            Point a = points[i];
+            Point b = points[i + A_PTS + 1];
+            Point c = points[i + A_PTS + B_PTS + 2];
+
+            double mecRadius = Point.minimalEnclosingCircleRadius(a, b, c);
+            if (mecRadius > RADIUS1) return true;
+        }
+
         return false;
     }
 
@@ -199,7 +242,25 @@ public class CMV {
         return false;
     }
 
-    boolean lic12() {
+    boolean lic12(Point[] points, int NUMPOINTS, double LENGTH1, double LENGTH2, int K_PTS) {
+        if (points == null || NUMPOINTS < 3 || points.length < NUMPOINTS || K_PTS < 1 || K_PTS > NUMPOINTS - 2 || LENGTH2 < 0)
+            return false;
+
+        // Represents the two pairs of points to match greater than LENGTH1 and LENGTH2 respectively
+        boolean pair1 = false;
+        boolean pair2 = false;
+
+        for (int i = 0; i < NUMPOINTS - K_PTS - 1; i++) {
+            double distance = points[i].distance(points[i + K_PTS + 1]);
+
+            if (distance > LENGTH1)
+                pair1 = true;
+            if (distance < LENGTH2)
+                pair2 = true;
+
+            if (pair1 && pair2)
+                return true;
+        }
         return false;
     }
 
@@ -221,17 +282,17 @@ public class CMV {
 
         cmv[0] = lic0(points, p.LENGTH1, NUMPOINTS);
         cmv[1] = lic1(points, NUMPOINTS, p.RADIUS1);
-        cmv[2] = lic2();
+        cmv[2] = lic2(points, NUMPOINTS, 3.1415926535, p.EPSILON); // PI might be up for change in future
         cmv[3] = lic3(points, NUMPOINTS, p.AREA1);
         cmv[4] = lic4(points, NUMPOINTS, p.Q_PTS, p.QUADS);
         cmv[5] = lic5(points, NUMPOINTS);
         cmv[6] = lic6(points, NUMPOINTS, p.N_PTS, p.DIST);
-        cmv[7] = lic7();
-        cmv[8] = lic8();
+        cmv[7] = lic7(points, NUMPOINTS, p.LENGTH1, p.K_PTS);
+        cmv[8] = lic8(points, NUMPOINTS, p.A_PTS, p.B_PTS, p.RADIUS1);
         cmv[9] = lic9(points, NUMPOINTS, p.C_PTS, p.D_PTS, 3.1415926535, p.EPSILON);
         cmv[10] = lic10(points,p.E_PTS,p.F_PTS,p.AREA1,NUMPOINTS);
         cmv[11] = lic11(points, NUMPOINTS, p.G_PTS);
-        cmv[12] = lic12();
+        cmv[12] = lic12(points, NUMPOINTS, p.LENGTH1, p.LENGTH2, p.K_PTS);
         cmv[13] = lic13();
         cmv[14] = lic14();
         cmv[15] = lic15();
