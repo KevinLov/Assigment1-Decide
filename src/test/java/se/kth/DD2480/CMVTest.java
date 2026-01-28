@@ -682,8 +682,131 @@ class CMVTest {
     void lic13() {
     }
 
+    //This test tests that the comparisons with AREA1 and AREA2 works as intended.
+    //We modify the values for AREA1 and AREA2 and see that their results are consistent.
+    //Area is 0.5 between firstPoint, secondPoint, thirdPoint.
     @Test
-    void lic14() {
+    void lic14TestThatAREA1AndAREA2ConditionsWorkCorrectlyWhenFirstInArray() {
+        CMV cmv = new CMV();
+        Point firstPoint = new Point(0,0);
+        Point secondPoint = new Point(1, 0);
+        Point thirdPoint = new Point(0, 1);
+        Point[] pts = {firstPoint,
+                new Point(1,0),
+                secondPoint,
+                new Point(0,0),
+                thirdPoint};
+        assertFalse(cmv.lic14(pts, 5, 1, 1, 5, 10)); //0.5>AREA1 false when AREA1=5
+        assertTrue(cmv.lic14(pts, 5, 1, 1, 0.4, 10)); //0.5>AREA1 true when AREA1=0.4
+        assertTrue(cmv.lic14(pts, 5, 1, 1, 0.4, 0.6)); //0.6<AREA2 true AREA2=0.6
+        assertFalse(cmv.lic14(pts, 5, 1, 1, 0.4, 0.4)); //0.6<AREA2 false AREA2=0.4
+    }
+
+    //Area is 0.5 between firstPoint, secondPoint, thirdPoint.
+    @Test
+    void lic14TestThatAREA1AndAREA2ConditionsWorkCorrectlyWhenNotFirstInArray() {
+        CMV cmv = new CMV();
+        Point firstPoint = new Point(0,0);
+        Point secondPoint = new Point(1, 0);
+        Point thirdPoint = new Point(0, 1);
+        Point[] points = {
+                new Point(12,12),
+                firstPoint,
+                new Point(12,12),
+                secondPoint,
+                new Point(12,12),
+                thirdPoint};
+        assertTrue(cmv.lic14(points, points.length, 1, 1, 0.4, 10));
+        assertFalse(cmv.lic14(points, points.length, 1, 1, 0.6, 10));
+    }
+
+    //Area is 0.5 between firstPoint, secondPoint, thirdPoint.
+    @Test
+    void lic14TestThatAREA1AndAREA2ConditionsWorkCorrectlyWhenDifferentTriples() {
+        CMV cmv = new CMV();
+        Point firstPoint = new Point(0,0);
+        Point secondPoint = new Point(1, 0);
+        Point thirdPoint = new Point(0, 1);
+
+        //Area=25
+        Point firstPoint2 = new Point(10,10);
+        Point secondPoint2 = new Point(20, 10);
+        Point thirdPoint2 = new Point(5, 5);
+
+        Point[] points = {
+                firstPoint2,
+                firstPoint,
+                secondPoint2,
+                secondPoint,
+                thirdPoint2,
+                thirdPoint};
+        assertTrue(cmv.lic14(points, points.length, 1, 1, 20, 0.6));
+
+        assertFalse(cmv.lic14(points, points.length, 1, 1, 25, 0.6)); //Boundary condition, fails because 25>25 returns false
+        assertFalse(cmv.lic14(points, points.length, 1, 1, 20, 0.5)); //Boundary condition, fails because 0.5<0.5 returns false
+    }
+    @Test
+    void lic14TestHandlesThrowsNullCorrectly() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0,0), new Point(1,0), new Point(0,1),new Point(0,1),new Point(0,1)};
+        AssertionError err = assertThrows(AssertionError.class, () ->
+                cmv.lic14(null, points.length, 1, 1, 20, 0.6)
+        );
+        assertTrue(err.getMessage().contains("'points' must not be null"));
+    }
+    @Test
+    void lic14TestHandlesThrowsNUMPOINTSCorrectly() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0,0), new Point(1,0), new Point(0,1),new Point(0,1),new Point(0,1)};
+        AssertionError err = assertThrows(AssertionError.class, () ->
+                cmv.lic14(points, 4, 1, 1, 20, 0.6)
+        );
+        assertTrue(err.getMessage().contains("'NUMPOINTS' must be >= 5"));
+    }
+    @Test
+    void lic14TestHandlesThrowsIndexBoundaryCorrectly() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0,0), new Point(1,0), new Point(0,1),new Point(0,1),new Point(0,1),new Point(0,1),new Point(0,1),new Point(0,1)};
+        AssertionError err = assertThrows(AssertionError.class, () ->
+                cmv.lic14(points, points.length, 5, 1, 20, 0.6)
+        );
+        assertTrue(err.getMessage().contains("E_PTS + F_PTS must be <= NUMPOINTS - 3"));
+    }
+    @Test
+    void lic14TestHandlesThrowsE_PTSCorrectly() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0,0), new Point(1,0), new Point(0,1),new Point(0,1),new Point(0,1)};
+        AssertionError err = assertThrows(AssertionError.class, () ->
+                cmv.lic14(points, points.length, 0, 1, 20, 0.6)
+        );
+        assertTrue(err.getMessage().contains("'E_PTS' must be >= 1"));
+    }
+    @Test
+    void lic14TestHandlesThrowsF_PTSCorrectly() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0,0), new Point(1,0), new Point(0,1),new Point(0,1),new Point(0,1)};
+        AssertionError err = assertThrows(AssertionError.class, () ->
+                cmv.lic14(points, points.length, 1, 0, 20, 0.6)
+        );
+        assertTrue(err.getMessage().contains("'F_PTS' must be >= 1"));
+    }
+    @Test
+    void lic14TestHandlesThrowsAREA1Correctly() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0,0), new Point(1,0), new Point(0,1),new Point(0,1),new Point(0,1)};
+        AssertionError err = assertThrows(AssertionError.class, () ->
+                cmv.lic14(points, points.length, 1, 1, -1, 0.6)
+        );
+        assertTrue(err.getMessage().contains("'AREA1' must be >= 0"));
+    }
+    @Test
+    void lic14TestHandlesThrowsAREA2Correctly() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0,0), new Point(1,0), new Point(0,1),new Point(0,1),new Point(0,1)};
+        AssertionError err = assertThrows(AssertionError.class, () ->
+                cmv.lic14(points, points.length, 1, 1, 20, -1)
+        );
+        assertTrue(err.getMessage().contains("'AREA2' must be >= 0"));
     }
 
     @Test
