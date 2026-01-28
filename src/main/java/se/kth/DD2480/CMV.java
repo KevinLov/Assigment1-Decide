@@ -42,9 +42,12 @@ public class CMV {
     }
 
     boolean lic2(Point[] points, int NUMPOINTS, double PI, double EPSILON) {
-
-        if (points == null || points.length < 3 || NUMPOINTS != points.length || EPSILON < 0 || EPSILON >= PI || PI != 3.1415926535)
-            return false;
+        assert points != null : "'points' must not be null";
+        assert NUMPOINTS >= 3 : "'NUMPOINTS' must be >= 3";
+        assert NUMPOINTS == points.length : "'NUMPOINTS' must equal points.length";
+        assert PI == 3.1415926535 : "'PI' must be equal to 3.1415926535";
+        assert EPSILON >= 0 : "'EPSILON' must be >= 0";
+        assert EPSILON < PI : "'EPSILON' must be < PI";
 
         for (int i = 1; i < NUMPOINTS - 1; i++) {
             Point a = points[i - 1];
@@ -90,7 +93,13 @@ public class CMV {
 
     boolean lic4(Point[] points, int NUMPOINTS, int Q_PTS, int QUADS) {
         HashSet<Integer> quadSet = new HashSet<>();
-        if(points == null || Q_PTS < 2 || Q_PTS > NUMPOINTS || Q_PTS <= QUADS || QUADS < 1 || QUADS > 3) return false;
+        assert points != null : "'points' must not be null";
+        assert Q_PTS >= 2 : "'Q_PTS' must be >= 2";
+        assert Q_PTS <= NUMPOINTS : "'Q_PTS' must be <= NUMPOINTS";
+        assert QUADS >= 1 : "'QUADS' must be >= 1";
+        assert QUADS <= 3 : "'QUADS' must be <= 3";
+        assert Q_PTS > QUADS : "'Q_PTS' must be > QUADS";
+
         for(int i = 0; i <= NUMPOINTS - Q_PTS; i++) {
             determineQuadrant(quadSet, points[i]);
             for(int j = i+1; j < i + Q_PTS; j++) {
@@ -142,8 +151,12 @@ public class CMV {
     }
 
     boolean lic7(Point[] points, int NUMPOINTS, double LENGTH1, int K_PTS) {
-        if (points == null || NUMPOINTS < 3 || points.length < NUMPOINTS || K_PTS < 1 || K_PTS > (NUMPOINTS-2))
-            return false;
+        assert points != null : "'points' must not be null";
+        assert NUMPOINTS >= 3 : "'NUMPOINTS' must be >= 3";
+        assert NUMPOINTS == points.length : "'NUMPOINTS' must equal points.length";
+        assert K_PTS >= 1 : "'K_PTS' must be >= 1";
+        assert K_PTS <= (NUMPOINTS - 2) : "'K_PTS' must be <= NUMPOINTS - 2";
+        assert LENGTH1 >= 0 : "'LENGTH1' must be >= 0";
 
         for (int i = 0; i < NUMPOINTS - K_PTS - 1; i++) {
             Point a = points[i];
