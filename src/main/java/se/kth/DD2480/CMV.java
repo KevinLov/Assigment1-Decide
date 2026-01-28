@@ -90,7 +90,13 @@ public class CMV {
 
     boolean lic4(Point[] points, int NUMPOINTS, int Q_PTS, int QUADS) {
         HashSet<Integer> quadSet = new HashSet<>();
-        if(points == null || Q_PTS < 2 || Q_PTS > NUMPOINTS || Q_PTS <= QUADS || QUADS < 1 || QUADS > 3) return false;
+        assert points != null : "'points' must not be null";
+        assert Q_PTS >= 2 : "'Q_PTS' must be >= 2";
+        assert Q_PTS <= NUMPOINTS : "'Q_PTS' must be <= NUMPOINTS";
+        assert QUADS >= 1 : "'QUADS' must be >= 1";
+        assert QUADS <= 3 : "'QUADS' must be <= 3";
+        assert Q_PTS > QUADS : "'Q_PTS' must be > QUADS";
+
         for(int i = 0; i <= NUMPOINTS - Q_PTS; i++) {
             determineQuadrant(quadSet, points[i]);
             for(int j = i+1; j < i + Q_PTS; j++) {
