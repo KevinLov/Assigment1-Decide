@@ -95,14 +95,83 @@ class CMVTest {
     }
 
     @Test
-    void lic2_returnsFalse_whenInputParametersAreWrong() {
+    void lic2_throwsError_whenPointsNull() {
         CMV cmv = new CMV();
-        Point[] validPoints = {new Point(0, 1), new Point(0, 0), new Point(1, 0)};
 
-        assertFalse(cmv.lic2(null, 3, 3.1415926535, 1));              // Points is invalid
-        assertFalse(cmv.lic2(validPoints, 2, 3.1415926535, 1));             // NUMPOINTS is invalid
-        assertFalse(cmv.lic2(validPoints, 3, 1, 0));                        // EPSILON is invalid
-        assertFalse(cmv.lic2(validPoints, 3, 3.1415926535, 3.1415926535));  // EPSILON is invalid
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic2(null, 3, 3.1415926535, 1);
+        });
+        assertEquals("'points' must not be null", error.getMessage());
+    }
+
+    @Test
+    void lic2_throwsError_whenNUMPOINTSLessThan3() {
+        CMV cmv = new CMV();
+        Point[] points  = {
+                new Point(0,1),
+                new Point(0,0),
+                new Point(1,0)
+        };
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic2(points, 2, 3.1415926535, 1);
+        });
+        assertEquals("'NUMPOINTS' must be >= 3", error.getMessage());
+    }
+
+    @Test
+    void lic2_throwsError_whenNUMPOINTSNotEqualLength() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(0,1),
+                new Point(0,0),
+                new Point(1,0)
+        };
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic2(points, 4, 3.1415926535, 1);
+        });
+        assertEquals("'NUMPOINTS' must equal points.length", error.getMessage());
+    }
+
+    @Test
+    void lic2_throwsError_whenEPSILONNegative() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(0,1),
+                new Point(0,0),
+                new Point(1,0)
+        };
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic2(points, 3, 3.1415926535, -1);
+        });
+        assertEquals("'EPSILON' must be >= 0", error.getMessage());
+    }
+
+    @Test
+    void lic2_throwsError_whenEPSILONTooLarge() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(0,1),
+                new Point(0,0),
+                new Point(1,0)
+        };
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic2(points, 3, 3.1415926535, 3.1415926535);
+        });
+        assertEquals("'EPSILON' must be < PI", error.getMessage());
+    }
+
+    @Test
+    void lic2_throwsError_whenPIWrong() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(0,1),
+                new Point(0,0),
+                new Point(1,0)
+        };
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic2(points, 3, 3.14, 1);
+        });
+        assertEquals("'PI' must be equal to 3.1415926535", error.getMessage());
     }
 
     @Test

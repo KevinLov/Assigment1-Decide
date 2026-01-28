@@ -42,9 +42,12 @@ public class CMV {
     }
 
     boolean lic2(Point[] points, int NUMPOINTS, double PI, double EPSILON) {
-
-        if (points == null || points.length < 3 || NUMPOINTS != points.length || EPSILON < 0 || EPSILON >= PI || PI != 3.1415926535)
-            return false;
+        assert points != null : "'points' must not be null";
+        assert NUMPOINTS >= 3 : "'NUMPOINTS' must be >= 3";
+        assert NUMPOINTS == points.length : "'NUMPOINTS' must equal points.length";
+        assert PI == 3.1415926535 : "'PI' must be equal to 3.1415926535";
+        assert EPSILON >= 0 : "'EPSILON' must be >= 0";
+        assert EPSILON < PI : "'EPSILON' must be < PI";
 
         for (int i = 1; i < NUMPOINTS - 1; i++) {
             Point a = points[i - 1];
