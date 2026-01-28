@@ -128,16 +128,32 @@ class CMVTest {
     }
 
     @Test
-    void lic3_returnsFalse_whenNumpointsIsLessThanThree() {
+    void lic3_throwsError_whenNumpointsIsLessThanThree() {
         CMV cvm = new CMV();
         Point[] points = {new Point(0, 0), new Point(0, 10), new Point(10, 0)};
-        assertFalse(cvm.lic3(points, 2, 0.0));
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cvm.lic3(points, 2, 0.0);
+        });
+        assertEquals("'NUMPOINTS' must be >= 3", error.getMessage());
     }
 
     @Test
-    void lic3_returnsFalse_whenPointsIsNull() {
+    void lic3_throwsError_whenPointsIsNull() {
         CMV cvm = new CMV();
-        assertFalse(cvm.lic3(null, 3, 10.0));
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cvm.lic3(null, 3, 10.0);
+        });
+        assertEquals("'points' must not be null", error.getMessage());
+    }
+
+    @Test
+    void lic3_throwsError_whenArea1IsLessThanZero() {
+        CMV cmv = new CMV();
+        Point[] points = {new Point(0, 0), new Point(0, 10), new Point(10, 0)};
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic3(points, 3, -1.0);
+        });
+        assertEquals("'AREA1' must be >= 0", error.getMessage());
     }
 
     @Test
