@@ -1,10 +1,13 @@
 package se.kth.DD2480;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CMVTest {
     CMV cmv;
@@ -990,7 +993,29 @@ class CMVTest {
     }
 
     @Test
-    void lic11_returnsFalseForG_PTSBeingLargerThanNUMPOINTSMinusTwo() {
+    void lic11_throwErrorWhenPointsIsNull() {
+        CMV cmv = new CMV();
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic11(null, 3, 1);
+        });
+        assertEquals("'points' must not be null", error.getMessage());
+    }
+
+    @Test
+    void lic11_throwErrorWhenNUMPOINTSIsLessThan3() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(1, 1),
+                new Point(2, 4)
+        };
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic11(points, points.length, 1);
+        });
+        assertEquals("'NUMPOINTS' must be >= 3", error.getMessage());
+    }
+
+    @Test
+    void lic11_throwErrorWhenNUMPOINTSNotSameAsNumOfPoints() {
         CMV cmv = new CMV();
         Point[] points = {
                 new Point(1, 1),
@@ -999,8 +1024,42 @@ class CMVTest {
                 new Point(4, 0),
                 new Point(5, 0)
         };
-        
-        assertFalse(cmv.lic11(points, points.length, 4));
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic11(points, 7, 1);
+        });
+        assertEquals("'NUMPOINTS' must equal points.length", error.getMessage());
+    }
+
+    @Test
+    void lic11_throwErrorWhenG_PTSIsLessThan1() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(1, 1),
+                new Point(2, 4),
+                new Point(3, 3),
+                new Point(4, 0),
+                new Point(5, 0)
+        };
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic11(points, points.length, 0);
+        });
+        assertEquals("'G_PTS' must be >= 1", error.getMessage());
+    }
+
+    @Test
+    void lic11_throwErrorWhenG_PTSIsLargerThanNUMPOINTSMinusTwo() {
+        CMV cmv = new CMV();
+        Point[] points = {
+                new Point(1, 1),
+                new Point(2, 4),
+                new Point(3, 3),
+                new Point(4, 0),
+                new Point(5, 0)
+        };
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic11(points, points.length, 4);
+        });
+        assertEquals("'G_PTS' must be <= NUMPOINTS - 2", error.getMessage());
     }
 
     /**
