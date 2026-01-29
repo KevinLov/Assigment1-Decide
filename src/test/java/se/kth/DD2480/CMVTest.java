@@ -322,6 +322,13 @@ class CMVTest {
         assertTrue(cmv.lic3(points, points.length, 0.0));
     }
 
+    /**
+     * Given a sequence of Q_PTS covering more than QUADS distinct quadrants then lic4 must return true.
+     * Boundary conditions:
+     * 1) (0,0), (0,1) is in quadrant 1.
+     * 2) (-1,0) is in quadrant 2.
+     * 3) (0,-1) is in quadrant 3.
+     */
     @Test
     void lic4_ReturnsTrueForConsecutiveBoundaryPoints() {
         CMV cmv = new CMV();
@@ -330,6 +337,14 @@ class CMVTest {
         assertTrue(cmv.lic4(points, points.length, 5, 2));
     }
 
+    /**
+     * Given a sequence of Q_PTS covering more than QUADS distinct quadrants then lic4 must return true.
+     * In this test, Q_PTS = 4 and QUADS = 3, meaning four consecutive points should all be lying in distinct quadrants.
+     * In each outer for-loop iteration the hashSet is cleared.
+     * The four elements of the first iteration cover only three quadrants, and similarly for the second iteration covers only three quadrants.
+     * Combined they cover four quadrants.
+     * Since the hashSet is cleared between iterations then lic4 must return false in this test.
+     */
     @Test
     void lic4_ReturnsFalseWhenSetIsClearedWhenItWouldHaveReturnedTrueOtherwise() {
         CMV cmv = new CMV();
@@ -338,13 +353,10 @@ class CMVTest {
         assertFalse(cmv.lic4(points, points.length, 4, 3));
     }
 
-    @Test
-    void lic4_ReturnsFalseWhenQuad4IsExcluded() {
-        CMV cmv = new CMV();
-        Point[] points = {new Point(0, 0), new Point(1,1)};
-        assertFalse(cmv.lic4(points, points.length, 2, 1));
-    }
-
+    /**
+     * Points (0,0) and (1,1) belong to the first quadrant, and can thus not cover more than 1 quadrant.
+     * Since Q_PTS = 2 and QUADS = 1 in this test, then lic4 must return false.
+     */
     @Test
     void lic4_ReturnsFalseWhenAllPointsInOneQuad() {
         CMV cmv = new CMV();
@@ -352,6 +364,11 @@ class CMVTest {
         assertFalse(cmv.lic4(points, points.length, 2, 1));
     }
 
+    /**
+     * With Q_PTS = 2 and QUADS = 1 lic4 will return true iff there exists two consecutive points that cover more than
+     * 1 quadrant.
+     * In this test, the two points belong to two distinct quadrants and lie consecutively, therefore lic4 must return true.
+     */
     @Test
     void lic4_ReturnsTrueWhenTwoConsecutiveSpreadInTwoDistinctQuads() {
         CMV cmv = new CMV();
@@ -359,12 +376,22 @@ class CMVTest {
         assertTrue(cmv.lic4(points, points.length, 2, 1));
     }
 
+    /**
+     * With Q_PTS = 2 and QUADS = 1 lic4 will return true iff there exists two consecutive points that cover more than
+     * 1 quadrant.
+     * In this test, the two points belong to two distinct quadrants and lie consecutively, therefore lic4 must return true.
+     */
     @Test
     void lic4_ReturnsTrueForConsecutivelyPlacedCorrectElementsAreFirstInPointsArray() {
         CMV cmv = new CMV();
         Point[] points = {new Point(0, 0), new Point(-1, -1), new Point(-1, 0), new Point(-1, 1)};
         assertTrue(cmv.lic4(points, points.length, 3, 2));
     }
+
+    /**
+     * With Q_PTS = 3 and QUADS = 2 lic4 will return true iff there exists two consecutive points that cover more than 1 quadrant.
+     * In this test, the last three points cover three distinct quadrants, so lic4 must return true.
+     */
     @Test
     void lic4_ReturnsTrueForConsecutivelyPlacedCorrectElementsAreLastInPointsArray() {
         CMV cmv = new CMV();
@@ -372,6 +399,10 @@ class CMVTest {
         assertTrue(cmv.lic4(points, points.length, 3, 2));
     }
 
+    /**
+     * With Q_PTS = 3, QUADS = 2 lic4 will return true iff there exists two consecutive points that cover more than 2 distinct quadrants.
+     * In this test, no Q_PTS consecutive points of three cover more than two quadrants so lic 4 must return false.
+     */
     @Test
     void lic4_returnsFalseWhenNotSpreadInDistinctQuadsButNotConsecutively() {
         CMV cmv = new CMV();
@@ -379,6 +410,12 @@ class CMVTest {
                 new Point(0, -10), new Point(1, 15)};
         assertFalse(cmv.lic4(points, points.length, 3, 2));
     }
+
+    /**
+     * Lic 4 requires that no points are null.
+     * If points == null, the method throws an AssertionError with message "'points' must not be null".
+     * In this test, points is given to lic4 as null so lic4 must throw an AssertionError with the expected message.
+     */
     @Test
     void lic4TestHandlesThrowsNullCorrectly() {
         CMV cmv = new CMV();
@@ -388,6 +425,12 @@ class CMVTest {
         );
         assertTrue(err.getMessage().contains("'points' must not be null"));
     }
+
+    /**
+     * Lic 4 requires that Q_PTS must be >= 2.
+     * If Q_PTS < 2, the method throws an AssertionError with message "'Q_PTS' must be >= 2".
+     * In this test, Q_PTS is given with value 1, so lic4 must throw an AssertionError with the expected message..
+     */
     @Test
     void lic4TestHandlesThrowsQ_PTSCorrectly() {
         CMV cmv = new CMV();
@@ -397,6 +440,12 @@ class CMVTest {
         );
         assertTrue(err.getMessage().contains("'Q_PTS' must be >= 2"));
     }
+
+    /**
+     * Lic 4 requires that Q_PTS must be <= NUMPOINTS.
+     * If Q_PTS > NUMPOINTS, the method throws an AssertionError with message "'Q_PTS' must be <= NUMPOINTS".
+     * In this test, the length of points is 4 so NUMPOINTS = 4, but Q_PTS = 5 so lic4 must throw an AssertionError with the expected message.
+     */
     @Test
     void lic4TestHandlesThrowsQ_PTSGreaterThanNumpointsCorrectly() {
         CMV cmv = new CMV();
@@ -406,6 +455,12 @@ class CMVTest {
         );
         assertTrue(err.getMessage().contains("'Q_PTS' must be <= NUMPOINTS"));
     }
+
+    /**
+     * Lic 4 requires that QUADS must be >= 1.
+     * If QUADs < 1, the method throws an AssertionError with message "'QUADS' must be >= 1".
+     * In this test, QUADS is given as 0, so lic4 must throw an AssertionError with the expected message.
+     */
     @Test
     void lic4TestHandlesThrowsQuadsLesserThanOneCorrectly() {
         CMV cmv = new CMV();
@@ -415,6 +470,12 @@ class CMVTest {
         );
         assertTrue(err.getMessage().contains("'QUADS' must be >= 1"));
     }
+
+    /**
+     * Lic 4 requires that QUADS must be <= 3.
+     * If QUADS > 3, the method throws an AssertionError with message "'QUADS' must be <= 3".
+     * In this test, QUADS is given as 4, so lic4 must throw an AssertionError with the expected message.
+     */
     @Test
     void lic4TestHandlesThrowsQuadsGreaterEqThanFourPICorrectly() {
         CMV cmv = new CMV();
@@ -424,6 +485,12 @@ class CMVTest {
         );
         assertTrue(err.getMessage().contains("'QUADS' must be <= 3"));
     }
+
+    /**
+     * Lic 4 requires that Q_PTS > QUADS.
+     * If Q_PTS <= QUADS, the method throws an AssertionError with message "'Q_PTS' must be > QUADS".
+     * In this test, Q_PTS = QUADS, so lic4 must throw an AssertionError with the expected message.
+     */
     @Test
     void lic4TestHandlesThrowsQ_PTSLesserThanQuadsFourPICorrectly() {
         CMV cmv = new CMV();
