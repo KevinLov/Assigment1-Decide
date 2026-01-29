@@ -868,6 +868,15 @@ class CMVTest {
         assertTrue(cmv.lic8(points, points.length, 1, 1, 1.0));
     }
 
+    /**
+     * Given valid inputs, lic9 returns true iff there exists at least one set of three points
+     * where first and second point are separated by C_PTS consecutive intervening points,
+     * and the second and third point are separated by D_PTS consecutive intervening points
+     * where the three points form an angle where angle < (PI - EPSILON) or angle > (PI + EPSILON)
+     *
+     * In this test, the angle is calculated to 90 degrees = 1.5708 radians, PI = 3.1415926535 and EPSILON = 0.000001.
+     * Thus, 1.5708 < (3.1415926535 - 0.000001) so lic 9 must return true.
+     */
     @Test
     void lic9ReturnsTrueForMinimumCaseWherePointsAreNinetyDegrees() {
         CMV cmv = new CMV();
@@ -882,7 +891,15 @@ class CMVTest {
         assertTrue(cmv.lic9(degreeVertices90, 5, 1, 1, 3.1415926535, 0.000001));
     }
 
-    //Forms an angle of 89.95. If epsilon is 100 degrees then expect false.
+    /**
+     * Given valid inputs, lic9 returns true iff there exists at least one set of three points
+     * where first and second point are separated by C_PTS consecutive intervening points,
+     * and the second and third point are separated by D_PTS consecutive intervening points
+     * where the three points form an angle where angle < (PI - EPSILON) or angle > (PI + EPSILON)
+     *
+     * In this test, the angle is calculated to 90 degrees = 1.5708 radians, PI = 3.1415926535 and EPSILON = 1.80.
+     * Thus, 1.5708 < (3.1415926535 - 1.80) so lic 9 must return false.
+     */
     @Test
     void lic9ReturnsFalseForMinimumCaseWhereAgnleIsNinetyDegreesAndEpsilonIs100Degrees() {
         CMV cmv = new CMV();
@@ -897,9 +914,16 @@ class CMVTest {
         assertFalse(cmv.lic9(degreeVertices90, 5, 1, 1, 3.1415926535, 1.80));
     }
 
-    //Angle is 3.141592653589793 which is 180.00000000044650506
-    //and the PI is 3.1415926535 which is 179.999999995302
-    //We are testing 180.00000000044650506 < (179.999999995302 - 0.0174533)
+    /**
+     * Given valid inputs, lic9 returns true iff there exists at least one set of three points
+     * where first and second point are separated by C_PTS consecutive intervening points,
+     * and the second and third point are separated by D_PTS consecutive intervening points
+     * where the three points form an angle where angle < (PI - EPSILON) or angle > (PI + EPSILON)
+     *
+     * In this test, the angle is calculated to 3.141592653589793 = 180.00000000044650506 degrees.
+     * PI = 3.1415926535 and EPSILON = 0.0174533.
+     * Thus, 180.00000000044650506 < (179.999999995302 - 0.0174533) so lic 9 must return false.
+     */
     @Test
     void lic9ReturnsFalseForOppositeVectorsWith180DegreesAngleAndEpsilonIs1Degree() {
         CMV cmv = new CMV();
@@ -914,10 +938,16 @@ class CMVTest {
         assertFalse(cmv.lic9(degreeVertices90, degreeVertices90.length, 1, 1, 3.1415926535, 0.0174533));
     }
 
-    //Angle is 3.141592653589793 which is 179.42706130276246768
-    //and the PI is 3.1415926535 which is 179.999999995302
-    //We are testing 179.42706130276246768 < (179.990000329)
-    // Testing the precision when values angle and (PI - Epsilon) are close
+    /**
+     * Given valid inputs, lic9 returns true iff there exists at least one set of three points
+     * where first and second point are separated by C_PTS consecutive intervening points,
+     * and the second and third point are separated by D_PTS consecutive intervening points
+     * where the three points form an angle where angle < (PI - EPSILON) or angle > (PI + EPSILON)
+     *
+     * In this test, the angle is calculated to 141592653589793 = 179.42706130276246768 degrees.
+     * PI = 3.1415926535 and EPSILON = 0.008000.
+     * Thus, 179.42706130276246768 < (179.999999995302 - 0.008000) so lic 9 must return true.
+     */
     @Test
     void lic9ReturnsTrueForOppositeVectorsWith179DegreesAngleAndEpsilonIsExtremelySmall() {
         CMV cmv = new CMV();
@@ -932,6 +962,11 @@ class CMVTest {
         assertTrue(cmv.lic9(degreeVertices90, degreeVertices90.length, 1, 1, 3.1415926535, 0.008000));
     }
 
+    /**
+     * Lic 9 requires that no points are null.
+     * If points == null, the method throws an AssertionError with message "'points' must not be null".
+     * In this test, points is given to lic 9 as null so lic 9 must throw an AssertionError with the expected message.
+     */
     @Test
     void lic9TestHandlesThrowsNullCorrectly() {
         CMV cmv = new CMV();
@@ -942,6 +977,11 @@ class CMVTest {
         assertTrue(err.getMessage().contains("'points' must not be null"));
     }
 
+    /**
+     * Lic 9 requires that NUMPOINTS must be >= 5.
+     * If NUMPOINTS < 5, the method throws an AssertionError with message "'NUMPOINTS' must be >= 5".
+     * In this test, Q_PTS is given with value 4, so lic9 must throw an AssertionError with the expected message.
+     */
     @Test
     void lic9TestHandlesThrowsNUMPOINTSCorrectly() {
         CMV cmv = new CMV();
@@ -952,6 +992,11 @@ class CMVTest {
         assertTrue(err.getMessage().contains("'NUMPOINTS' must be >= 5"));
     }
 
+    /**
+     * Lic 9 requires that C_PTS must be >= 1.
+     * If C_PTS < 1, the method throws an AssertionError with message "'C_PTS' must be >= 1".
+     * In this test, C_PTS is given with value 0, so lic9 must throw an AssertionError with the expected message.
+     */
     @Test
     void lic9TestHandlesThrowsC_PTSCorrectly() {
         CMV cmv = new CMV();
@@ -962,6 +1007,11 @@ class CMVTest {
         assertTrue(err.getMessage().contains("'C_PTS' must be >= 1"));
     }
 
+    /**
+     * Lic 9 requires that D_PTS must be >= 1.
+     * If D_PTS < 1, the method throws an AssertionError with message "'D_PTS' must be >= 1".
+     * In this test, D_PTS is given with value 0, so lic9 must throw an AssertionError with the expected message.
+     */
     @Test
     void lic9TestHandlesThrowsD_PTSCorrectly() {
         CMV cmv = new CMV();
@@ -972,6 +1022,11 @@ class CMVTest {
         assertTrue(err.getMessage().contains("'D_PTS' must be >= 1"));
     }
 
+    /**
+     * Lic 9 requires that C_PTS + D_PTS must be <= NUMPOINTS - 3.
+     * If C_PTS + D_PTS must be <= NUMPOINTS - 3, the method throws an AssertionError with message "C_PTS + D_PTS must be <= NUMPOINTS - 3".
+     * In this test, C_PTS = 5, D_PTS = 1 and NUMPOINTS = 8 thus 5 + 1 > 8-3 so lic9 must throw an AssertionError with the expected message.
+     */
     @Test
     void lic9TestHandlesThrowsIndexBoundaryCorrectly() {
         CMV cmv = new CMV();
@@ -982,6 +1037,11 @@ class CMVTest {
         assertTrue(err.getMessage().contains("C_PTS + D_PTS must be <= NUMPOINTS - 3"));
     }
 
+    /**
+     * Lic 9 requires that EPSILON must be >= 0.
+     * If EPSILON < 0, the method throws an AssertionError with message "'EPSILON' must be >= 0".
+     * In this test, EPSILON = -1 so lic9 must throw an AssertionError with the expected message.
+     */
     @Test
     void lic9TestHandlesThrowsEpsilonLesserThanOneCorrectly() {
         CMV cmv = new CMV();
@@ -992,6 +1052,11 @@ class CMVTest {
         assertTrue(err.getMessage().contains("'EPSILON' must be >= 0"));
     }
 
+    /**
+     * Lic 9 requires that EPSILON must be < PI.
+     * If EPSILON < PI, the method throws an AssertionError with message "'EPSILON' must be lesser than 'PI'".
+     * In this test, EPSILON = 0.6 and PI = -1 so lic9 must throw an AssertionError with the expected message.
+     */
     @Test
     void lic9TestHandlesThrowsEpsilonGreaterEqThanPICorrectly() {
         CMV cmv = new CMV();
