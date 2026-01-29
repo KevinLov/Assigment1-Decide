@@ -8,20 +8,17 @@ public class PUM
     public PUM() {
         this.arr = new boolean[15][15];
     }
-    public PUM(LCM lcm, CMV cmv, Parameters p, Point[] points, int NUMPOINTS){
-        this.arr = new boolean[15][15];
-        boolean[] cmvArray = cmv.verifyAllLics(p, points , NUMPOINTS);
+
+    public boolean[][] makePUM(CONNECTORS[][] lcm, boolean[] cmvArray) {
         for(int i = 0; i < 15; ++i){
             for (int j = 0; j < 15; j++) {
-                switch(lcm.arr[i][j]){
+                switch(lcm[i][j]){
                     case NOTUSED -> this.arr[i][j] = true;
                     case ORR -> this.arr[i][j] = cmvArray[i] || cmvArray[j];
                     case ANDD -> this.arr[i][j] = cmvArray[i] && cmvArray[j];
                 }
             }
         }
-
-
+        return this.arr;
     }
-
 }
