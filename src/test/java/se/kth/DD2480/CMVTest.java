@@ -50,7 +50,6 @@ class CMVTest {
     /**
      * The method throws AssertionError if {@code NUMPOINTS != points.length}
      */
-
     @Test
     void lic0_throwErrorWhenNUMPOINTSNotSameAsNumOfPoints() {
         CMV cmv = new CMV();
@@ -462,6 +461,9 @@ class CMVTest {
         assertTrue(err.getMessage().contains("'Q_PTS' must be > QUADS"));
     }
 
+    /**
+     * The method should throw AssertionError if {@code points} is {@code null}
+     */
     @Test
     void lic5_throwErrorWhenPointsIsNull() {
         CMV cmv = new CMV();
@@ -472,6 +474,9 @@ class CMVTest {
         assertEquals("'points' must not be null", error.getMessage());
     }
 
+    /**
+     * The method should throw AssertionError if {@code NUMPOINTS} is less than 2
+     */
     @Test
     void lic5_throwErrorWhenNUMPOINTSLessThan2() {
         CMV cmv = new CMV();
@@ -483,6 +488,9 @@ class CMVTest {
         assertEquals("'NUMPOINTS' must be >= 2", error.getMessage());
     }
 
+    /**
+     * The method should throw AssertionError if {@code NUMPOINTS != points.length}
+     */
     @Test
     void lic5_throwErrorWhenNUMPOINTSNotSameAsNumOfPoints() {
         CMV cmv = new CMV();
@@ -494,6 +502,10 @@ class CMVTest {
         assertEquals("'points.length' must be equal 'NUMPOINTS'", error.getMessage());
     }
 
+    /**
+     * The method should return {@code true} if there exists a pair of consecutive points
+     *         such that {@code x[i+1] - x[i] < 0}
+     */
     @Test
     void lic5_decreasingX_true() {
         CMV cmv = new CMV();
@@ -501,6 +513,10 @@ class CMVTest {
         assertTrue(cmv.lic5(pts, 2)); // 1 - 2 < 0
     }
 
+    /**
+     * The method should return {@code false} if there is only a pair of consecutive points
+     *         such that {@code x[i+1] - x[i] = 0}
+     */
     @Test
     void lic5_equalX_false() {
         CMV cmv = new CMV();
@@ -508,6 +524,10 @@ class CMVTest {
         assertFalse(cmv.lic5(pts, 2)); // 2 - 2 = 0 NOT < 0
     }
 
+    /**
+     * The method should return {@code true} if there exists a pair of consecutive points
+     *         such that {@code x[i+1] - x[i] < 0}
+     */
     @Test
     void lic5_increaseThenDecrease_true() {
         CMV cmv = new CMV();
