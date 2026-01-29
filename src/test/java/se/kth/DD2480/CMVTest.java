@@ -46,15 +46,6 @@ class CMVTest {
         assertFalse(cmv.lic0(pts, 2.0, 2)); // dist=2 NOT > 2
     }
 
-
-    void lic1_anyinput() {
-        CMV cmv = new CMV();
-        Point p1 = new Point(0,0);
-        Point p2 = new Point(10,0);
-        Point[] points = {p1, p2};
-        assertFalse(cmv.lic1(points, 2, 1));
-    }
-
     @Test
     void lic1_returnsTrue_whenRadiusBiggerThanRADIUS1() {
         CMV cmv = new CMV();
@@ -66,16 +57,62 @@ class CMVTest {
         assertTrue(cmv.lic1(points, 4, 5));
     }
 
-
+    @Test
+    void lic1_returnsFalse_whenRadiusSmallerThanRADIUS1() {
+        CMV cmv = new CMV();
+        Point p1 = new Point(0,0);
+        Point p2 = new Point(1,0);
+        Point p3 = new Point(10,0);
+        Point p4 = new Point(0,10);
+        Point[] points = {p1, p2, p3, p4};
+        assertFalse(cmv.lic1(points, 4, 50));
+    }
 
     @Test
-    void lic1_invalid_input() {
+    void lic1_throwsErrorWhenRADIUS1LessThan0() {
         CMV cmv = new CMV();
         Point p1 = new Point(0,0);
         Point p2 = new Point(10,0);
         Point p3 = new Point(0,10);
         Point[] points = {p1, p2, p3};
-        assertFalse(cmv.lic1(points, 3, -1));
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic1(points, 3, -1);
+        });
+        assertEquals("'RADIUS1' must be >= 0", error.getMessage());
+    }
+
+    @Test
+    void lic1_throwsError_whenPointsIsNull() {
+        CMV cmv = new CMV();
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic1(null, 3, 1);
+        });
+        assertEquals("'points' must not be null", error.getMessage());
+    }
+
+    @Test
+    void lic1_throwsErrorWhenNumpointsLessThan3() {
+        CMV cmv = new CMV();
+        Point p1 = new Point(0,0);
+        Point p2 = new Point(10,0);
+        Point[] points = {p1, p2};
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic1(points, 2, 1);
+        });
+        assertEquals("'NUMPOINTS' must be >= 3", error.getMessage());
+    }
+
+    @Test
+    void lic1_throwsErrorWhenNumpointsNotSameAsNumOfPoints() {
+        CMV cmv = new CMV();
+        Point p1 = new Point(0,0);
+        Point p2 = new Point(10,0);
+        Point p3 = new Point(0,10);
+        Point[] points = {p1, p2, p3};
+        AssertionError error = assertThrows(AssertionError.class, () -> {
+            cmv.lic1(points, 4, 1);
+        });
+        assertEquals("'points.length' must be == 'NUMPOINTS'", error.getMessage());
     }
 
     @Test

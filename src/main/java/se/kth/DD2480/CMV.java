@@ -25,9 +25,11 @@ public class CMV {
     }
 
     boolean lic1(Point[] points, int NUMPOINTS, double RADIUS1) {
-        if(points == null || NUMPOINTS < 3 || RADIUS1 < 0){
-            return false;
-        }
+        assert points != null : "'points' must not be null";
+        assert NUMPOINTS >= 3 : "'NUMPOINTS' must be >= 3";
+        assert RADIUS1 >= 0 : "'RADIUS1' must be >= 0";
+        assert points.length == NUMPOINTS : "'points.length' must be == 'NUMPOINTS'";
+
         for (int i = 0; i < NUMPOINTS-2; i++) {
             Point a = points[i];
             Point b = points[i+1];
