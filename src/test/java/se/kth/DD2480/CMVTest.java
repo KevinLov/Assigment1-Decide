@@ -1239,8 +1239,9 @@ class CMVTest {
     }
 
     /**
-     * Tests if two separate pairs K_PTS apart fit criteria.
-     * Criteria for LIC to be true: One pair more than LENGHT1 apart and one pair less than LENGTH2 apart
+     * Given points where there is a pair of point with one point in between that has a distance to each other greater than 'LENGHT1',
+     * and there is a pair of points with one point in between with distance to each other of less than 'LENGHT2'
+     * the method will return true.
      */
     @Test
     void lic12_returnsTrue_whenTwoSeparatePairsOfPointsK_PTSapartFitCriteria() {
@@ -1253,7 +1254,9 @@ class CMVTest {
     }
 
     /**
-     * Criteria for LIC to be true: One pair more than LENGHT1 apart and one pair less than LENGTH2 apart
+     * Given points where there is a pair of point with one point in between that has a distance to each other greater than 'LENGHT1',
+     * but there is no pair of points with one point in between with distance to each other of less than 'LENGHT2'
+     * the method will return false.
      */
     @Test
     void lic12_returnsFalse_whenOnlyOnePairFitsCriteria() {
@@ -1265,6 +1268,10 @@ class CMVTest {
         assertFalse(cmv.lic12(points, 4, 3, 1, 1)); // POINTS, NUMPOINTS, LENGHT1, LENGHT2, K_PTS
     }
 
+    /**
+     * Given points where no pair of point with one point in between has a distance to each other greater than 'LENGTH1',
+     * or a distance smaller than 'LENGHT2', the method will return false.
+     */
     @Test
     void lic12_returnsFalse_whenNoPairFitsCriteria() {
         CMV cmv = new CMV();
@@ -1275,6 +1282,11 @@ class CMVTest {
         assertFalse(cmv.lic12(points, 4, 10, 1, 1)); // POINTS, NUMPOINTS, LENGHT1, LENGHT2, K_PTS
     }
 
+    /**
+     * The method requires 'points' to be non-null.
+     * If points == null, the method throws AssertionError
+     * with message "'points' must not be null".
+     */
     @Test
     void lic12_throwsError_whenPointsNull() {
         CMV cmv = new CMV();
@@ -1285,6 +1297,11 @@ class CMVTest {
         assertEquals("'points' must not be null", error.getMessage());
     }
 
+    /**
+     * The method requires 'NUMPOINTS' >= 3.
+     * If NUMPOINTS < 3, the method throws AssertionError
+     * with message "'NUMPOINTS' must be >= 3".
+     */
     @Test
     void lic12_throwsError_whenNUMPOINTSLessThan3() {
         CMV cmv = new CMV();
@@ -1296,6 +1313,11 @@ class CMVTest {
         assertEquals("'NUMPOINTS' must be >= 3", error.getMessage());
     }
 
+    /**
+     * The method requires 'NUMPOINTS' == 'points.length'.
+     * If NUMPOINTS != 'points.length', the method throws AssertionError
+     * with message "'NUMPOINTS' must equal points.length".
+     */
     @Test
     void lic12_throwsError_whenNUMPOINTSNotEqualPointsLength() {
         CMV cmv = new CMV();
@@ -1307,6 +1329,11 @@ class CMVTest {
         assertEquals("'NUMPOINTS' must equal points.length", error.getMessage());
     }
 
+    /**
+     * The method requires 'K_PTS' must be >= 1.
+     * If 'K_PTS' < 1, the method throws AssertionError
+     * with message "'K_PTS' must be >= 1".
+     */
     @Test
     void lic12_throwsError_whenKPTSLessThan1() {
         CMV cmv = new CMV();
@@ -1318,6 +1345,11 @@ class CMVTest {
         assertEquals("'K_PTS' must be >= 1", error.getMessage());
     }
 
+    /**
+     * The method requires 'K_PTS' <= NUMPOINTS - 2.
+     * If 'K_PTS' > NUMPOINTS - 2, the method throws AssertionError
+     * with message "'K_PTS' must be <= NUMPOINTS - 2".
+     */
     @Test
     void lic12_throwsError_whenKPTSTooLarge() {
         CMV cmv = new CMV();
@@ -1329,6 +1361,11 @@ class CMVTest {
         assertEquals("'K_PTS' must be <= NUMPOINTS - 2", error.getMessage());
     }
 
+    /**
+     * The method requires 'LENGTH1' >= 0.
+     * If 'LENGTH1' < 0, the method throws AssertionError
+     * with message "'LENGTH1' must be >= 0".
+     */
     @Test
     void lic12_throwsError_whenLENGTH1Negative() {
         CMV cmv = new CMV();
@@ -1340,6 +1377,11 @@ class CMVTest {
         assertEquals("'LENGTH1' must be >= 0", error.getMessage());
     }
 
+    /**
+     * The method requires 'LENGTH2' >= 0.
+     * If 'LENGTH2' < 0, the method throws AssertionError
+     * with message "'LENGTH2' must be >= 0".
+     */
     @Test
     void lic12_throwsError_whenLENGTH2Negative() {
         CMV cmv = new CMV();
