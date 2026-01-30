@@ -875,7 +875,7 @@ class CMVTest {
      * where the three points form an angle where angle < (PI - EPSILON) or angle > (PI + EPSILON)
      *
      * In this test, the angle is calculated to 90 degrees = 1.5708 radians, PI = 3.1415926535 and EPSILON = 0.000001.
-     * Thus, 1.5708 < (3.1415926535 - 0.000001) so lic 9 must return true.
+     * And since 1.5708 is less than (3.1415926535 - 0.000001), lic 9 must return true.
      */
     @Test
     void lic9ReturnsTrueForMinimumCaseWherePointsAreNinetyDegrees() {
@@ -898,7 +898,7 @@ class CMVTest {
      * where the three points form an angle where angle < (PI - EPSILON) or angle > (PI + EPSILON)
      *
      * In this test, the angle is calculated to 90 degrees = 1.5708 radians, PI = 3.1415926535 and EPSILON = 1.80.
-     * Thus, 1.5708 < (3.1415926535 - 1.80) so lic 9 must return false.
+     * And since 1.5708 is not less than (3.1415926535 - 1.80), lic 9 must return false.
      */
     @Test
     void lic9ReturnsFalseForMinimumCaseWhereAgnleIsNinetyDegreesAndEpsilonIs100Degrees() {
@@ -922,7 +922,7 @@ class CMVTest {
      *
      * In this test, the angle is calculated to 3.141592653589793 = 180.00000000044650506 degrees.
      * PI = 3.1415926535 and EPSILON = 0.0174533.
-     * Thus, 180.00000000044650506 < (179.999999995302 - 0.0174533) so lic 9 must return false.
+     * And since 180.00000000044650506 is not less than (179.999999995302 - 0.0174533), lic 9 must return false.
      */
     @Test
     void lic9ReturnsFalseForOppositeVectorsWith180DegreesAngleAndEpsilonIs1Degree() {
@@ -946,7 +946,7 @@ class CMVTest {
      *
      * In this test, the angle is calculated to 141592653589793 = 179.42706130276246768 degrees.
      * PI = 3.1415926535 and EPSILON = 0.008000.
-     * Thus, 179.42706130276246768 < (179.999999995302 - 0.008000) so lic 9 must return true.
+     * And since 179.42706130276246768 is less than (179.999999995302 - 0.008000), lic 9 must return true.
      */
     @Test
     void lic9ReturnsTrueForOppositeVectorsWith179DegreesAngleAndEpsilonIsExtremelySmall() {
