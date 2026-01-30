@@ -1579,6 +1579,11 @@ class CMVTest {
         assertEquals("'LENGTH2' must be >= 0", error.getMessage());
     }
 
+    /**
+     * The method requires 'points' to be non-null.
+     * If points == null, the method throws AssertionError
+     * with message "'points' must not be null".
+     */
     @Test
     void lic13_throwsError_whenPointsIsNull() {
         CMV cmv = new CMV();
@@ -1589,6 +1594,11 @@ class CMVTest {
         assertEquals("'points' must not be null", error.getMessage());
     }
 
+    /**
+     * The method requires 'NUMPOINTS' >= 5.
+     * If NUMPOINTS < 5, the method throws AssertionError
+     * with message "'NUMPOINTS' must be >= 5".
+     */
     @Test
     void lic13_throwsError_whenNUMPOINTSLessThan5() {
         CMV cmv = new CMV();
@@ -1605,6 +1615,11 @@ class CMVTest {
         assertEquals("'NUMPOINTS' must be >= 5", error.getMessage());
     }
 
+    /**
+     * The method requires 'A_PTS' >= 1.
+     * If A_PTS < 1, the method throws AssertionError
+     * with message "'A_PTS' must be >= 1".
+     */
     @Test
     void lic13_throwsError_whenAPTSLessThan1() {
         CMV cmv = new CMV();
@@ -1621,6 +1636,11 @@ class CMVTest {
         assertEquals("'A_PTS' must be >= 1", error.getMessage());
     }
 
+    /**
+     * The method requires 'B_PTS' >= 1.
+     * If B_PTS < 1, the method throws AssertionError
+     * with message "'B_PTS' must be >= 1".
+     */
     @Test
     void lic13_throwsError_whenBPTSLessThan1() {
         CMV cmv = new CMV();
@@ -1637,6 +1657,11 @@ class CMVTest {
         assertEquals("'B_PTS' must be >= 1", error.getMessage());
     }
 
+    /**
+     * The method requires A_PTS + B_PTS <= NUMPOINTS - 3.
+     * If A_PTS + B_PTS > NUMPOINTS - 3, the method throws AssertionError
+     * with message "A_PTS + B_PTS must be <= NUMPOINTS - 3".
+     */
     @Test
     void lic13_throwsError_whenSeparationTooLarge() {
         CMV cmv = new CMV();
@@ -1653,6 +1678,11 @@ class CMVTest {
         assertEquals("A_PTS + B_PTS must be <= NUMPOINTS - 3", error.getMessage());
     }
 
+    /**
+     * The method requires RADIUS1 >= 0.
+     * If RADIUS1 < 0, the method throws AssertionError
+     * with message "'RADIUS1' must be >= 0".
+     */
     @Test
     void lic13_throwsError_whenRADIUS1LessThan0() {
         CMV cmv = new CMV();
@@ -1669,6 +1699,11 @@ class CMVTest {
         assertEquals("'RADIUS1' must be >= 0", error.getMessage());
     }
 
+    /**
+     * The method requires RADIUS2 >= 0.
+     * If RADIUS2 < 0, the method throws AssertionError
+     * with message "'RADIUS2' must be >= 0".
+     */
     @Test
     void lic13_throwsError_whenRADIUS2LessThan0() {
         CMV cmv = new CMV();
@@ -1685,6 +1720,16 @@ class CMVTest {
         assertEquals("'RADIUS2' must be >= 0", error.getMessage());
     }
 
+    /**
+     * Given an array of data points, where:
+     *    - there exists a set of three data points that cannot be contained
+     *      within or on a circle of radius RADIUS1,
+     *    - there does not exist a set of three data points that can be
+     *      contained within or on a circle of radius RADIUS2, and
+     *    - the three data points are separated by exactly A_PTS and B_PTS
+     *      consecutive intervening points, respectively, in both sets,
+     * lic13() returns false.
+     */
     @Test
     void lic13_returnsFalse_radius1CannotContain_radius2CannotContain() {
         CMV cmv = new CMV();
@@ -1698,6 +1743,16 @@ class CMVTest {
         assertFalse(cmv.lic13(points, points.length, 1, 1, 1.0, 1.0));
     }
 
+    /**
+     * Given an array of data points, where:
+     *    - there does not exist a set of three data points that cannot
+     *      be contained within or on a circle of radius RADIUS1,
+     *    - there exists a set of three data points that can be
+     *      contained within or on a circle of radius RADIUS2, and
+     *    - the three data points are separated by exactly A_PTS and B_PTS
+     *      consecutive intervening points, respectively, in both sets,
+     * lic13() returns false.
+     */
     @Test
     void lic13_returnsFalse_radius1CanContain_radius2CanContain() {
         CMV cmv = new CMV();
@@ -1711,6 +1766,16 @@ class CMVTest {
         assertFalse(cmv.lic13(points, points.length, 1, 1, 3.0, 3.0));
     }
 
+    /**
+     * Given an array of data points, where:
+     *    - there does not exist a set of three data points that cannot
+     *      be contained within or on a circle of radius RADIUS1,
+     *    - there does not exist a set of three data points that can be
+     *      contained within or on a circle of radius RADIUS2, and
+     *    - the three data points are separated by exactly A_PTS and B_PTS
+     *      consecutive intervening points, respectively, in both sets,
+     * lic13() returns false.
+     */
     @Test
     void lic13_returnsFalse_radius1CanContain_radius2CannotContain() {
         CMV cmv = new CMV();
@@ -1724,6 +1789,17 @@ class CMVTest {
         assertFalse(cmv.lic13(points, points.length, 1, 1, 3.0, 1.0));
     }
 
+    /**
+     * Given an array of data points, where:
+     *    - there exists a set of three data points that cannot
+     *      be contained within or on a circle of radius RADIUS1,
+     *    - there exists a set of three data points that can be
+     *      contained within or on a circle of radius RADIUS2,
+     *    - the same set of three data points satisfies both conditions, and
+     *    - the three data points in the set are separated by exactly
+     *      A_PTS and B_PTS consecutive intervening points, respectively
+     * lic13() returns true.
+     */
     @Test
     void lic13_returnsTrue_sameTripletSatisfiesBothConditions() {
         CMV cmv = new CMV();
@@ -1737,6 +1813,17 @@ class CMVTest {
         assertTrue(cmv.lic13(points, points.length, 1, 1, 1.0, 3.0));
     }
 
+    /**
+     * Given an array of data points, where:
+     *    - there exists a set of three data points that cannot
+     *      be contained within or on a circle of radius RADIUS1,
+     *    - there exists a set of three data points that can be
+     *      contained within or on a circle of radius RADIUS2,
+     *    - different sets of three data points satisfy the conditions, and
+     *    - the three data points are separated by exactly A_PTS and B_PTS
+     *      consecutive intervening points, respectively, in both sets,
+     * lic13() returns true.
+     */
     @Test
     void lic13_returnsTrue_differentTripletsSatisfyBothConditions() {
         CMV cmv = new CMV();
