@@ -337,6 +337,10 @@ class CMVTest {
         assertFalse(cmv.lic2(straightLine, 3, 3.1415926535, 0.000001)); // Points, NUMPOINTS, PI, EPSILON
     }
 
+    /**
+     * Given data points that are the vertices of a triangle with area less than AREA1,
+     * lic3() returns false.
+     */
     @Test
     void lic3_returnsFalse_whenPointsAreaLessThanArea1() {
         CMV cmv = new CMV();
@@ -344,6 +348,10 @@ class CMVTest {
         assertFalse(cmv.lic3(points, points.length, 100.0));
     }
 
+    /**
+     * Given data points that are the vertices of a triangle with area equal to AREA1,
+     * lic3() returns false.
+     */
     @Test
     void lic3_returnsFalse_whenPointsAreaEqualToArea1() {
         CMV cmv = new CMV();
@@ -351,6 +359,11 @@ class CMVTest {
         assertFalse(cmv.lic3(points, points.length, 50.0));
     }
 
+    /**
+     * The method requires 'NUMPOINTS' >= 3.
+     * If NUMPOINTS < 3, the method throws AssertionError
+     * with message "'NUMPOINTS' must be >= 3".
+     */
     @Test
     void lic3_throwsError_whenNumpointsIsLessThanThree() {
         CMV cvm = new CMV();
@@ -361,6 +374,11 @@ class CMVTest {
         assertEquals("'NUMPOINTS' must be >= 3", error.getMessage());
     }
 
+    /**
+     * The method requires 'points' to be non-null.
+     * If points == null, the method throws AssertionError
+     * with message "'points' must not be null".
+     */
     @Test
     void lic3_throwsError_whenPointsIsNull() {
         CMV cvm = new CMV();
@@ -370,6 +388,11 @@ class CMVTest {
         assertEquals("'points' must not be null", error.getMessage());
     }
 
+    /**
+     * The method requires 'AREA1' > 0.
+     * If 'AREA1' < 0, the method throws AssertionError
+     * with message "'AREA1' must be >= 0".
+     */
     @Test
     void lic3_throwsError_whenArea1IsLessThanZero() {
         CMV cmv = new CMV();
@@ -380,6 +403,11 @@ class CMVTest {
         assertEquals("'AREA1' must be >= 0", error.getMessage());
     }
 
+    /**
+     * Given data points that are the vertices of a triangle with area greater than AREA1,
+     * where these valid data points are stored in the first three positions of the Point array,
+     * lic3() returns true.
+     */
     @Test
     void lic3_returnsTrue_whenFirstPointsHaveValidArea() {
         CMV cmv = new CMV();
@@ -392,6 +420,11 @@ class CMVTest {
         assertTrue(cmv.lic3(points, points.length, 49.0));
     }
 
+    /**
+     * Given data points that are the vertices of a triangle with area greater than AREA1,
+     * where these valid data points are stored in the last three positions of the Point array,
+     * lic3() returns true.
+     */
     @Test
     void lic3_returnsTrue_whenLastPointsHaveValidArea() {
         CMV cmv = new CMV();
@@ -404,6 +437,11 @@ class CMVTest {
         assertTrue(cmv.lic3(points, points.length, 99.0));
     }
 
+    /**
+     * Given data points that are the vertices of a triangle with area greater than AREA1,
+     * where AREA1 is 0.0,
+     * lic3() returns true.
+     */
     @Test
     void lic3_returnsTrue_whenPointsHaveValidAreaAndArea1IsZero() {
         CMV cmv = new CMV();
