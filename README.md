@@ -1,4 +1,4 @@
-# Decide - Launch Interceptor Program          
+# Decide - Launch Interceptor Program           
 This repo contains our Java implementation of the requirement specification where the method DECIDE() will generate a boolean signal, which determines whether an interceptor should be
 launched based upon input radar tracking information.
 
