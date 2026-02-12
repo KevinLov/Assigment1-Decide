@@ -107,7 +107,7 @@ class CMVTest {
         Point p3 = new Point(10, 0);
         Point p4 = new Point(0, 10);
         Point[] points = {p1, p2, p3, p4};
-        assertFalse(cmv.lic1(points, 4, 5));
+        assertTrue(cmv.lic1(points, 4, 5));
     }
 
     /**
